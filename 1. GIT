@@ -1,0 +1,85 @@
+
+====================
+
+yum install git -y : to installg
+git init  					: to initalize repo
+touch file1					: to create a file
+git status					: to check the file status
+git add filename		: to track the file
+git commit -m ""		: to save the tracked file
+git log							: to list the commits
+git restore --staged: to untrack the tracked files
+
+TO CONFIGURE USER & EMAIL:
+git config user.name "raham"
+git config user.email "raham@gmail.com"
+
+GIT IGNORE:
+
+create some python files 
+
+vim .gitignore
+p* --- > :wq
+git status
+
+git log --oneline				: to show logs on single line
+git log --oneline -2		: to show last 2 logs on single line
+git show commit-id			: to show the files for the commits
+
+
+=======================================================
+
+BRANCHES: Branch is used to develope the code independently.
+by default barnch in git master.
+if we do an intail commit the n trhe master branch will come.
+
+NOTE: Git commands will work only on the folder where .git directory is present.
+
+git branch 				: To list the branches
+git branch dth			: To create a branch (name=dth)
+git checkout dth		: To switch to DTH Branch
+git checkout -b dth	: To create and swith parelley 
+git branch -m dth abc: To rename a branch  (dth=abc)
+git branch -D xyz		: To delete the Branch
+
+
+MERGE		: To add the files on 2 differnt branches
+
+git checkout master
+git merge dth
+git merge train
+
+
+REBASE	: Works like merge used to add the files on 2 differnt branches
+
+git checkout master
+git rebase recharge
+
+
+LOCAL REPO IS .git FOLDER     (LOCAL LAPTOP)
+CENTRAL/REMOTE REPO IS GITHUB (INTERNET)
+
+GITHUB:
+1. create a new account
+2. Create a new Repo (name is not indentical)
+
+
+Public : Anyone on the internet can see this repository. 
+Private : You choose who can see and commit to this repository.
+
+Settings -- > Developer settings -- > Personal access tokens (classic) -- > generate -- > classic -- > 
+
+
+scope:type of permission applied to token
+token will be seen only once
+
+
+MERGING ON GITHUB
+
+pull request -- > create new pull request -- > create -- > name: -- > merge -- > confirm merge 
+
+
+HISTORY:
+
+
+
