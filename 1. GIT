@@ -83,3 +83,235 @@ HISTORY:
 
 
 
+DAY-03:
+
+REVERT: To undo when we merge 2 branches we can undo the changes
+
+MERGE CONFLICT : When 2 developers are working on two diffrent branches but same file
+then merge conflict will come.
+we need to resolve it manually.
+
+PUSH : sending		: local -- > github  (git push origin master)
+PULL : taking		: Github -- > Local  (git pull origin master)
+FETCH: to show   : Github -- > Local  (git fetch)
+CLONE: To make a copy of other people repository. (Local) (git clone repo_url)
+FORK: To make a copy of other people repository.  (Github)
+
+GITHUB DANGERZONE OPTIONS:
+
+1. public <-- > private
+2. Transfer owenrship
+3. Archive
+4. Delete the Repo
+
+
+CHERRY-PICK: To get the files form specific commits 
+
+DAY-2&3: 
+
+ 1  git brach
+    2  git branch
+    3  ll
+    4  cd abcd/
+    5  git branch
+    6  touch dth{1..5}
+    7  git status
+    8  git add *
+    9  git status
+   10  git commit -m "dev-1 commits" *
+   11  ll
+   12  git branch
+   13  git branch train
+   14  git branch
+   15  git checkout train
+   16  git branch
+   17  ll
+   18  touch train{1..5}
+   19  git add *
+   20  git commit -m "dev-2 commits" *
+   21  ll
+   22  git status
+   23  git branch
+   24  git checkout -b recharge
+   25  git branch
+   26  ll
+   27  touch recharge{1..5}
+   28  git add *
+   29  git commit -m "dev-3 commits" *
+   30  git branch
+   31  git checkout master
+   32  git branch
+   33  ll
+   34  git merge dth
+   35  ll
+   36  git merge train
+   37  ll
+   38  git rebase recharge
+   39  ll
+   40  git remote add origin https://github.com/vemurimadhuri19/paytm.git
+   41  ls -al
+   42  git branch
+   43  ll
+   44  git push origin master
+   45  git branch
+   46  git branch -m dth abc
+   47  git branch
+   48  git branch -m abc raham
+   49  git branch
+   50  git branch -m raham dth
+   51  git branch
+   52  ll
+   53  git checkout -b xyz
+   54  ll
+   55  git branch
+   56  git branch -D xyz
+   57  git checkout master
+   58  git branch
+   59  git branch -D xyz
+   60  git branch
+   61  git push origin recharge
+   62  git push origin dth
+   63  ll
+   64  cd abcd/
+   65  git branch
+   66  git checkout dth
+   67*
+   68  git checkout master
+   69  ll
+   70  git checkout dth
+   71  git merge master
+   72  git revert master
+   73  ll
+   74  cd
+   75  ll
+   76  mkdir raham
+   77  cd raham/
+   78  git branch
+   79  git init
+   80  git branch
+   81  touch file1
+   82  git add file1
+   83  git commit -m "c1" file1
+   84  git checkout -b branch1
+   85  git branch
+   86  ll
+   87  touch file2
+   88  git add file2
+   89  git commit -m "c2" file1
+   90  git add file2
+   91  git commit -m "c2" file2
+   92  git branch
+   93  ll
+   94  git checkout master
+   95  ll
+   96  git merge branch1
+   97  ll
+   98  git revert
+   99  git revert branch1
+  100  ll
+  101  cd
+  102  mkdir devops
+  103  git init
+  104  git branch -m branch1
+  105  vim file1
+  106  git add file1
+  107  git commit -m "dev-1" file1
+  108  ll
+  109  rm -rf file1
+  110  cd raham/
+  111  ll
+  112  cd ..
+  113  ll
+  114  cd devops/
+  115  ll
+  116  git init
+  117  git branch -m branch1
+  118  vim file1
+  119  git add file1
+  120  git commit -m "dev-1" file1
+  121  git b
+  122  git branch
+  123  ll
+  124  cat file1
+  125  git checkout -b branch2
+  126  ll
+  127  vim file1
+  128  git add file1
+  129  git commit -m "dev-2" file1
+  130  git branch
+  131  cat file1
+  132  git checkout branch
+  133  git checkout branch1
+  134  cat file1
+  135  vim file1
+  136  git add file1
+  137  git commit -m "dev-1.0" file1
+  138  git branch
+  139  cat file1
+  140  git merge branch2
+  141  git diff file1
+  142  vim file1
+  143  git add file1
+  144  git coomit -m "dev-1.1" file1
+  145  git commit -m "dev-1.1" file1
+  146  git commit -m "dev-1.1"
+  147  cat file1
+  148  git remote add origin https://github.com/RAHAMSHAIK007/deletmelater.git
+  149  git push origin branch1
+  150  git pull origin branch1
+  151  ll
+  152  cat file1
+  153  git pull origin branch1
+  154  cat file1
+  155  git pull origin branch1
+  156  cat file1
+  157  git fetch
+  158  git fetch origin branch1:branch1
+  159  cat file1
+  160  git fetch
+  161  cat file1
+  162  cd
+  163  ll
+  164  git clone https://github.com/vemurimadhuri19/paytm.git
+  165  ll
+  166  cd paytm
+  167  ll
+  168  CD
+  169  cd
+  170  ll
+  171  mv devops aws
+  172  ll
+  173  mkdir gcp
+  174  cd gcp/
+  175  git init
+  176  git branch -m branch1
+  177  touch java{1..5}
+  178  git  add *
+  179  git commit -m "java" java*
+  180  git checkout -b branch2
+  181  ll
+  182  touch php{1..5}
+  183  git add php*
+  184  git commit -m "php" php*
+  185  touch python{1..5}
+  186  git add python*
+  187  git commit -m "python" python*
+  188  ll
+  189  git branch
+  190  git log --oneline
+  191  git checkout branch
+  192  git checkout branch1
+  193  ll
+  194  git cherry-pick b527a4b
+  195  ll
+  196  touch mojo{1..5}
+  197  git add mojo*
+  198  git commit -m "mojo" mojo*
+  199  git log --oneline
+  200  git checkout branch2
+  201  ll
+  202  git cherry-pick a178742
+  203  ll
+  204  history
+
+
