@@ -1,0 +1,47 @@
+JENKINS: Its a CI/CD TOOL.
+
+CI : CONTINOUS INTEGRATION
+CD : CONTINOUS DELIVERY/DEPLOYMENT
+
+INTEGRATION : ADDING (SOUCE CODE)
+INTEGRATE (ADDING) THE OLD CODE WITH THE NEW CODE.
+
+CI : CONTINOUS BUILD + CONTINOUS TEST
+
+BEFORE CI LIMITATIONS:
+1. TIME CONSUMING
+2. MANUAL WORK
+3. COMPLEXITY 
+
+CI : BUILD + TEST + DEPLOY (OPT)
+
+CD: CONTINUOUS DELIVERY/DEPLOYMENT
+
+CONTINUOUS DELIVERY : Deploying the code into production manually.
+CONTINUOUS DEPLOYMENT: Deploying the code into production Automatically.
+
+
+PIPELINE: 
+Series of events interlinked with each other.
+Step by step execution of a particular process. 
+
+
+ENV : 
+1. NON-PROD : DEV, TEST  (INTERNAL PURPOSE)
+2. UAT      : USER ACCEPTANCE TESTING (CLIENT)
+3. PROD     : LIVE SERVER (USERS) 
+
+Every app we are using now is Deployed on PROD(LIVE) sever 
+
+
+JENKINS: 
+Jenkins is an open source project written in java by Kohsuke Kawaguchi. 
+it runs on the Window, Linux and Mac OS.
+It is Community supported.
+Every thing is going to be worked on  plugins.
+Automates the Entire Software Development Life Cycle (SDLC).
+
+HUDSON -- > SUN MICRO SYSTEM(2004) -- > ORCALE -- > HUDSON=JENKINS, PAID=FREE
+
+SETUP: 5 STEPS (8080 -- > OPEN IN SG) --- > ALL TRAFFIC (ANYWHERE)
+
