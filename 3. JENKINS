@@ -45,3 +45,59 @@ HUDSON -- > SUN MICRO SYSTEM(2004) -- > ORCALE -- > HUDSON=JENKINS, PAID=FREE
 
 SETUP: 5 STEPS (8080 -- > OPEN IN SG) --- > ALL TRAFFIC (ANYWHERE)
 
+STEP-1: GETTING REPO & KEY (jenkins.io)
+  sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+  sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+  
+STEP-2: INSTALLING JAVA-11/17, GIT, MAVEN, JENKINS
+  yum install java git maven jenkins -y
+
+SETP-3: START JENKINS SERVICE
+   systemctl start jenkins.service
+   systemctl status jenkins.service
+Note: By default any service will be on stopped state, we need to start it.
+
+STEP-4: CONNECTING TO JENKINS
+  Copy-public-ip/dns of jenkin server:8080
+  EX: http://52.90.84.94:8080/
+  
+STEP-5: CONFIGURE
+
+http://52.90.84.94:8080/
+
+
+INTEGRATION OF GIT WITH JENKINS:
+
+NEW ITEM -- > FREE STYLE (NAME) -- > OK -- > GIT -- > 
+build -- > console output -- > green color
+cd /var/lib/jenkins/workspace/JOB-1
+
+Dahboard -- > job -- > condigure -- > Build step -- > Invoke top-level Maven targets
+mvn compile -- > save 
+
+green   : success
+red     : failed
+blue    : processing
+black   : stopped
+orange  : some depends missing
+
+CUSTOM WROKSPACE: getting our outputs on our required locations on server.
+
+cd 
+mkdir -p swiggy/dailybuilds
+cd /
+chown jenkins:jenkins /root/ -R
+
+dashboard -- > job -- > general -- > advance -- > Use custom workspace -- > 
+/root/swiggy/dailybuilds -- > save
+
+EXECUTING LINUX COMMANDS:
+
+Build steps -- > execure shell command -- > 
+
+
+
+  
+
+
+
