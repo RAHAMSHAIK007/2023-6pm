@@ -95,9 +95,69 @@ EXECUTING LINUX COMMANDS:
 
 Build steps -- > execure shell command -- > 
 
+================================================================================================================================
+DAY-02:
+Installig jenkins from script:
+
+vim jenkins.sh
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+yum install java git maven jenkins -y
+systemctl start jenkins.service
+systemctl status jenkins.service
+
+sh jenkins.sh
+
+PARAMETERS: Passing the information. 
+
+in real time we will get our works on form of tickets.
+Ticketing tools: JIRA, SHAREPOINT, TRELLO, SERVICE NOW, WORKDAY.
+
+TYPES:
+CHOICE : You can provide the choices.
+Dashboarh -- > raham -- > Configuration -- > This project is parameterized -- > choice
+
+STRING : we can pass the values directly without specifiying.
+Dashboarh -- > raham -- > Configuration -- > This project is parameterized -- > string
+
+MULTI-STRING: To pass the input in multiple lines  
+Dashboarh -- > raham -- > Configuration -- > This project is parameterized -- > multistring
+
+FILE: To build the local files.
+Dashboarh -- > raham -- > Configuration -- > This project is parameterized -- > file
+
+BOOLEAN: Defines true or false.
+Dashboarh -- > raham -- > Configuration -- > This project is parameterized -- > Boolean
 
 
-  
+VARIABLES: Varies as per the time.  used to hold the values
+
+1. User defined variables
+2. Jenkins Environment variables
 
 
+User defined variables:
+a. local  : it will work inside the job only.
+b. global : it will work inside & outside of the job also.
 
+a. local variable: ex-1:
+name=raham
+loc=hyderabad
+echo "hai all my name is $name, im from $loc"
+
+b. global variables: 
+
+Dashboard  -- > Manage Jenkins -- > Configure System -- > Global properties -- > Environment variables -- > add 
+
+when we define a value locally and globally, the local value will be taken by jenkins.
+
+2. Jenkins Environment Variables: variables which will change as per the build.
+
+user defined vs jenkins env vars
+user defined vars will not chanaged, jenkins env vars will change.
+users cannot defined the jenkins vars.
+
+==========================================================================================================================
+
+Throttle build: we can restrict the number of builds per hour/day/weekk ----
