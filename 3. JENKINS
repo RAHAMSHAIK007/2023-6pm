@@ -161,3 +161,99 @@ users cannot defined the jenkins vars.
 ==========================================================================================================================
 
 Throttle build: we can restrict the number of builds per hour/day/weekk ----
+
+================================================================================================
+
+DAY-03:
+
+PASSWORD LESS LOGIN:
+
+vim /var/lib/jenkins/config.xml  (7 th line true=false)
+systemctl restart jenkins.service
+systemctl status jenkins.service
+public-ip:8080
+
+=======================================================================================
+
+CRON JOB: Used to schedule the jobs at particual time intervals.
+
+*	: minutes
+*	: hours
+*	: date
+*	: month
+* 	: day (sun=0, sat=6)
+
+9:00 am 1 june 2023	:	00 9 1 6 4
+8:56 pm 31 05 2023	:	56 20 31 5 3
+				56 20 31 5 3
+new job -- > free style -- > git : url -- > Build Triggers  -- > Build periodically -- > (* * * * *) -- > save
+
+shortcut: https://crontab-generator.org/
+Build Triggers 
+9am -- > source code is not chnaged -- > cronjob -- > build -- > trigger -- > waste
+
+=======================================================================================
+
+POLL SCM: Will make a build when the developer changes the code in given time.
+if the code is chnaged on given time then only it will make a build.
+
+new job -- > free style -- > git : url -- > Build Triggers  -- >poll scm -- > (* * * * *) -- > save
+
+Disadvantge:
+we give time interval for 1 hr -- > dev 5 mins -- > 55 minutes (waste of time)
+in 1 hr i chnaged the code 2 times but i will get only last chnaged code.
+
+=======================================================================================
+
+WEBHOOK: Will trigger the build immedieatly when dev change the code.
+
+github -- > repo -- > settings -- > webhooks -- > add webhook -- > password -- > Payload URL: jenkinsurl(public:8080) 
+
+ex: (http://54.87.7.81:8080/github-webhook/)
+Content type : application/json  -- > add webhook
+
+new job -- > free style --> git : url -- > Build Triggers  -- > GitHub hook trigger for GITScm polling -- > save 
+
+=========================================================================================
+
+LINKED JOBS: J0b-1 is linked with job-2.
+if i build job-1 then j0b-2 will trigger automatically.
+
+1. UP STREAM JOBS
+2. DOWN STREAM JOBS
+
+post build: Actions that are happening after build.
+
+create 2 jobs -- > job-1 -- >  Post-build Actions -- > build other projects -- > job2 -- > save
+
+=========================================================================================
+
+Permalinks: shows the build infromation and status as well.
+
+Last build (#5), 18 sec ago
+Last stable build (#5), 18 sec ago
+Last successful build (#5), 18 sec ago
+Last completed build (#5), 18 sec ago
+
+============================================================================================
+
+Execute concurrent builds if necessary :  When this option is checked, multiple builds of this project may be executed in parallel. 
+
+=========================================================================================
+
+TIME STAMP: Add the timestamps to console output.
+it will be helpful in troubleshooting.
+
+Troubleshooting	: Finding solution for the issue.
+
+job1 -- > configure -- > Build Environment -- > Add timestamps to the Console Output -- > shell
+
+echo "the code is building"
+sleep 30
+echo "the code is testing"
+
+save
+
+In real time every log file will have the timestamp enabled.
+Log file : used to store the events happend on server.
+
