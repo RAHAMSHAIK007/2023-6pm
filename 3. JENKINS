@@ -257,3 +257,260 @@ save
 In real time every log file will have the timestamp enabled.
 Log file : used to store the events happend on server.
 
+==================================================================
+
+
+DAY-04:
+
+PIPELINE: Step by step execution of a Particular process.
+Series of events interlinked with each other.
+
+WHY TO USE PIPELINE INSTED OF FREE STYLE ?
+in pipeline you will visual of execution.
+
+TYPES:
+1. SCRIPTED 
+2. DECLARATIVE (MAJORLY)
+
+
+note: to execute linux commands we need to give sh 
+
+SCRIPTED:
+
+SINGLE STAGE: WE have only one stage in this pipieline.
+MULTI STAGE: WE have more than one stage in this pipieline.
+
+node {
+    stage("stage1") {
+        sh 'touch file1'
+    }
+    stage("raham") {
+        sh 'touch file2'
+    }
+}
+
+DECLARATIVE:
+
+pipeline:
+agent	: on which server the pipeline is executing.
+stages	: to define the stages 
+stage	: what you are performing
+steps	: action you are performing
+
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage("create file") {
+            steps {
+                sh 'touch file3'
+            }
+        }
+        stage('users list') {
+            steps {
+                sh 'cat /etc/passwd'
+            }
+        }
+        stage('memory useage') {
+            steps {
+                sh 'lsmem'
+            }
+        }
+    }
+}
+
+PIPELINE AS A CODE: Executing multiple commands over a single stage
+
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('abc') {
+            steps {
+                sh 'touch file4'
+                sh 'cat /etc/passwd'
+                sh 'lsmem'
+            }
+        }
+    }
+}
+
+
+MULTI STAGE PAAC:
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('abc') {
+            steps {
+                sh 'touch file4'
+                sh 'cat /etc/passwd'
+                sh 'lsmem'
+            }
+        }
+        stage('def') {
+            steps {
+                sh 'cat /etc/group'
+                sh 'ifconfig'
+            }
+        }
+    }
+}
+
+=====================================================================================
+
+PIPELINE AS A CODE OVER SINGLE SHELL:
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('abc') {
+            steps {
+                sh '''
+                touch file4
+                cat /etc/passwd
+                lsmem
+                '''
+            }
+        }
+    }
+}
+
+===========================================================================================
+
+variables: (local & global)
+
+pipeline {
+    agent any 
+    environment {
+        name='raham'
+        loc='hyderabad'
+        clinet='nareshit'
+    }
+    
+    stages {
+        stage('abc') {
+            steps {
+               sh 'echo my name is $name, im residing on $loc, im working for $clinet'
+            }
+        }
+    }
+}
+
+JENKINS DEFINED VARS:
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('abc') {
+            steps {
+               sh 'echo the build number is $BUILD_NUMBER'
+            }
+        }
+    }
+}
+
+PRINTENV: To print all the jenkins variables
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('abc') {
+            steps {
+               sh 'printenv'
+            }
+        }
+    }
+}
+
+=========================================================================================
+
+PARAMETERS: 
+
+CHOICE:
+
+pipeline {
+   agent any
+   
+       parameters {
+           choice(name: 'server', choices: ['a','b','c'], description: "")       
+       }
+   stages {
+       stage('parameters') {
+           steps {
+               echo 'this is my prod stage'
+           }
+       }
+   }
+}
+
+
+BOOLEAN:
+
+pipeline {
+   agent any
+       parameters {
+           booleanParam(name: 'db', defaultValue: true, description: "")
+       }
+   stages {
+       stage('parameters') {
+           steps {
+               echo 'this isn my prod stage'
+           }
+       }
+   }
+}
+
+STRING:
+
+pipeline {
+   agent any
+    environment {
+           name = 'raham'
+       }
+       parameters {
+           string(name: 'person', defaultValue: 'raham shaik', description: "how are you")
+       }
+   stages {
+       stage('parameters') {
+           steps {
+               sh 'echo "${name}"'
+               sh 'echo "${person}"'
+           }
+       }
+   }
+}
+
+===========================================================================================
+
+CI PIPELINE:
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RAHAMSHAIK007/11ambatch2023.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+    }
+}
+
+
