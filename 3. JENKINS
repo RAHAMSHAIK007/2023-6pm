@@ -514,3 +514,104 @@ pipeline {
 }
 
 
+=====================================================================================================
+
+
+DAY-06:
+
+MASTER & SLAVE :
+
+When build is triggered all the output is on master only.
+50 GB --- > 49 GB memory --- > new builds -- > Distribute the Build --- > JENKINS MASTER & SLAVE 
+
+
+LIMITATIONS:
+1. MEMORY COSUMPTION
+2. SERVER LOAD 
+3. BUILDS UNAVAILABLE 
+4. TIME CONSUMING
+
+SLAVE : it is also a server, which is communicating with master (SSH).
+It will store the build output.
+we can create multiple slave for jenkins.
+
+LABEL : used to Assingn build to worker node.
+AGENT : to work with slave server we need to install an agent (java-11/17)
+
+STEP-1: CREATE A SLAVE SERVER 
+STEP-2: INSTALL AGENT (yum install java -y)
+STEP-3: CONFIGURE YOUR SLAVE ON JENKINS DASHBOARD
+
+Dashboard  -- > Manage Jenkins -- > Manage Nodes & Clouds  -- > New node
+
+Node name: slave1  -- > Permanent Agent -- > create
+
+Number of executors	:	3	: Number of builds parallely
+Remote root directory	:	/tmp	: custom workspace on slave
+Labels			:       dev	: Assingn build to worker node
+Usage			: 	last	: when the build need to execute
+Launch method		:       last	: how master & slave communicate
+Host: private-ip-worker node, 
+creds -- > add -- > jenins -- > kind: ssh user name with private key 
+username: ec2-user & Private Key: use ppk of workernode -- > enter directly -- > add 
+Host Key Verification Strategy : last 
+
+
+AMAZON LINUX 2022:
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+amazon-linux-extras install java-openjdk11 -y 
+yum install git maven jenkins -y
+systemctl start jenkins.service
+systemctl status jenkins.service
+
+
+
+AMAZON LINUX 2023:
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+yum install java git maven jenkins -y
+systemctl start jenkins.service
+systemctl status jenkins.service
+
+==================================================================================================================================
+
+
+pipeline {
+    agent {
+        label 'prod'
+    }
+    
+    stages {
+        stage('one') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RAHAMSHAIK007/11ambatch2023.git'
+            }
+        }
+    }
+}
+
+==============================================================================
+
+RBAC	: ROLE BASED ACCESS CONTROL
+To restrict the jenkins Control for the users.
+
+user-1: EXP           user-2:FRESHER	USER-3: FRESHER
+
+1. USERS: Dashboard -- > Manage Jenkins -- > security -- > Users (crearte 2 users)
+2. PLUGIN: Dashboard -- > Manage Jenkins -- > Plugins -- > Available plugins -- > Role-based Authorization Strategy  -- > install -- > goback to top
+3. Dashboard  -- > Manage Jenkins -- > Security -- > Authorization: Role-Based strategy
+4. ROLES : Dashboard  -- > Manage Jenkins -- > Security -- > Manage and Assign Roles -- >
+   create Fresher & Experience roles and give permissions(EXP: ADMIN, FRE: BUILD AND READ)
+5. ASSIGN ROLES: user-1: EXP           user-2:FRESHER
+
+==============================================================================
+LIST VIEW: USED TO SEPERATE/FILTER THE JOBS.
+MY VIEW: USED TO SHOW THE JOBS WHICH I HAVE PERMISSIONS.
+BUILD PIPELINE VIEW: To show the process of linked jobs -- > PLUGINS -- > AVAILABLE -- > Build Pipeline -- > INSTALL
+
+BLUE OCEAN: used to have good visusla for our dashboard.
+
+PLUGIN: Dashboard -- > Manage Jenkins -- > Plugins -- > Available plugins -- > Blue Ocean -- > install 
