@@ -1,0 +1,153 @@
+DAY-01:
+
+ANSIBLE:
+TO AUTOMATE -- > SERVER, INSTALLING PKGS, DEPLOYMENT
+IT WILL DO THE WORK ON ALL SERVERS AT A SIGLE TIME.
+CONFIGURATION MANAGEMENT TOOL:
+
+CONFIGURATION: SOFTWARE (OS, SOFTWARE), HARDWARE: CPU, RAM, MEMORY
+MANAGEMENT: UPDATE, DELETE, INSTALLING OF PKGS -------------
+
+
+100 SERVERS --- > 100 HOURS FOR DEPLOYMENT & CONFIGURATION
+
+1 SERVER  --- > 1 HR
+100	  --- > 1 HR
+
+SETUP:
+CREATE 5 SERVERS (1-ANSIBLE, 4 WORKER NODES)
+
+
+ALL SERVERS:
+hostnamectl set-hostname
+sudo -i
+passwd root
+vim /etc/ssh/sshd_config
+38: PermitRootLogin yes  # uncomment
+63: PasswordAuthentication yes
+
+systemctl restart sshd
+systemctl status sshd
+
+to communicate with all servers
+===============================================================
+ANSIBLE SERVER:
+
+amazon-linux-extras install ansible2 -y
+yum install python python-pip python-level -y
+vim /etc/ansible/hosts
+
+[dev]
+172.31.86.81
+172.31.82.63
+
+[test]
+172.31.95.156
+172.31.83.100
+
+vim /etc/asnible/ansible.cfg (uncomment 14 & 22)
+
+SHH CONNECTIONS: ANSIBLE SERVER
+
+ssh-keygen  --- > 4 ENTERS
+
+ssh-copy-id root@172.31.82.63 --- > yes --- > password
+ssh 172.31.82.63
+ctrl + d (logout)
+Note: If you do not log out and try to connect to the new server it won't connect
+
+Connect all the servers in this way
+
+cd .ssh --- > cat known_hosts
+
+===============================================================
+INVENTORY HOST PATTERN:
+
+ansible all --list-hosts          # shows all the servers
+ansible all[1] --list-hosts       # shows the 2nd server of all 
+ansible dev --list-hosts          # shows the dev server only
+ansible test --list-hosts         # shows the test server only
+ansible test[1] --list-hosts      # shows the test 2nd server only
+ansible all[1:3] --list-hosts     # shows server 2 to server 4
+ansible all[-1] --list-hosts      # shows the last server
+ansible all[-3] --list-hosts      # shows the last 3rd server
+
+===============================================================
+IF YOU ARE WORKING WITH NON ROOT USER USE SUDO
+
+WORKING WITH ANSIBLE:
+
+1. ADHOC: SIMPLE LINUX COMMANDS USED FOR ONLY ONCE WORKS
+
+ansible all -a "ls"
+ansible: command line tool
+all  : servers 
+-a : arguments 
+ls : linux commands
+
+ansible all -a "touch file1"
+ansible all -a "yum install git -y"
+
+
+
+1  passwd root
+    2  vim /etc/ssh/sshd_config
+    3  systemctl restart sshd
+    4  systemctl status sshd
+    5  amazon-linux-extras install ansible2 -y
+    6  yum install python3 python-pip python-dlevel -y
+    7  hostname -i
+    8  vim /etc/ansible/hosts
+    9  vim /etc/ansible/ansible.cfg
+   10  ssh-keygen
+   11  ls -al
+   12  cd .ssh/
+   13  ll
+   14  cat id_rsa
+   15  cd
+   16  ssh-copy-id root@172.31.94.77
+   17  ssh 172.31.94.77
+   18  ssh-copy-id root@172.31.94.95
+   19  ssh 172.31.94.95
+   20  ssh-copy-id root@172.31.95.186
+   21  ssh 172.31.95.186
+   22  ssh-copy-id root@172.31.91.52
+   23  ssh 172.31.91.52
+   24  ls -al
+   25  cd .ssh
+   26  ll
+   27  cat known_hosts
+   28  cd
+   29  cat /etc/ansible/hosts
+   30  ansible all --list-hosts
+   31  ansible dev --list-hosts
+   32  ansible test --list-hosts
+   33  ansible all --list-hosts
+   34  ansible all[0] --list-hosts
+   35  ansible all[1] --list-hosts
+   36  ansible all[3] --list-hosts
+   37  ansible dev[1] --list-hosts
+   38  ansible test[0] --list-hosts
+   39  ansible all --list-hosts
+   40  ansible all[-1] --list-hosts
+   41  ansible all[-2] --list-hosts
+   42  ansible all --list-hosts
+   43  ansible all[1:3] --list-hosts
+   44  ansible all -a "ls"
+   45  ansible all -a "touch file1"
+   46  ansible all -a "ls"
+   47  ansible all -a "mkdir dir1"
+   48  ansible all -a "ls"
+   49  ansible all -a "yum install git -y"
+   50  ansible all -a "git -v"
+   51  ansible all -a "tyum install httpd -y"
+   52  ansible all -a "yum install httpd -y"
+   53  ansible all -a "systemctl start httpd -y"
+   54  ansible all -a "systemctl start httpd"
+   55  ansible all -a "systemctl status httpd"
+   56  ansible all -a "useradd raham"
+   57  ansible all -a "cat /etc/passwd"
+   58  hostnamectl set-hostname ansible
+   59  sudo -i
+   60  histroy
+   61  history
