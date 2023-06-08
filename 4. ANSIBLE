@@ -151,3 +151,230 @@ ansible all -a "yum install git -y"
    59  sudo -i
    60  histroy
    61  history
+
+
+=======================================================================================================
+
+DAY-02:
+
+MODULES: 
+work on key-value pairs.
+key-value pair is also called a Dictionary.
+Modules are reusable
+define -m for module
+
+ansible all -a "yum install git -y"
+ansible all -m yum -a "pkg=git state=present"
+ansible all -m yum -a "pkg=java-1.8.0-openjdk state=present"
+ansible all -m yum -a "name=httpd state=present"
+ansible all -m yum -a "name=httpd state=latest"
+ansible all -m service -a "name=httpd state=restarted"
+ansible all -m user -a "name=venkat state=present
+ansible all -m user -a "name=venky"
+ansible all -m copy -a "src=app.yml dest=/tmp"
+
+
+PLAYBOOKS: 
+Consist of one or more than one module
+to do the work more efficiently
+to write the playbook we need to use YAML.
+YAML=YET ANOTHER MARKUP LANGUAGE
+It is serializable language & Human readable language.
+in Yaml the first line starts with --- & end with ...
+YAML Works on key-value pair, it is also called as Dictionary. 
+In YAML indentation is more important.
+EXTENSION: yml=yaml
+
+PLAYBOOK-1 EXAMPLE: SINGLE MODULE
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=present
+
+PLAYBOOK-2 EXAMPLE: MULTI MODULE
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=present
+
+    - name: installing maven
+      yum: pkg=maven state=present
+
+PLAYBOOK-3 EXAMPLE: ACTION & YUM MODULE
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=present
+
+    - name: installing maven
+      yum: pkg=maven state=present
+
+    - name: installing java
+      action: yum pkg=java-1.8.0-openjdk state=present
+
+PLAYBOOK-4 EXAMPLE: ACTION & YUM & COMMAND & SHELL MODULE
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=absent
+
+    - name: installing maven
+      yum: pkg=maven state=absent
+
+    - name: installing java
+      action: yum pkg=java-1.8.0-openjdk state=absent
+
+    - name: installing httpd
+      shell: yum install httpd* -y
+
+
+
+PLAYBOOK-5 EXAMPLE: ACTION & YUM & COMMAND & SHELL & COMMAND MODULE
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=absent
+
+    - name: installing maven
+      yum: pkg=maven state=absent
+
+    - name: installing java
+      action: yum pkg=java-1.8.0-openjdk state=absent
+
+    - name: installing httpd
+      shell: yum install httpd -y
+
+    - name: installing tree
+      command: yum install tree -y
+
+ 
+
+
+PLAYBOOK-6 EXAMPLE: ACTION & YUM & COMMAND & SHELL & COMMAND & RAW MODULE
+
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=absent
+
+    - name: installing maven
+      yum: pkg=maven state=absent
+
+    - name: installing java
+      action: yum pkg=java-1.8.0-openjdk state=absent
+
+    - name: installing httpd
+      shell: yum install httpd -y
+
+    - name: installing tree
+      command: yum install tree -y
+
+    - name: installing docker
+      raw: yum install docker -y
+
+
+NOTE: In above playbook yum & action works on key value pair.
+shell, command and raw will not use key value pair.
+
+raw >> command >> shell
+
+TAGS: Used to execute a particular task
+
+- hosts: all
+  tasks:
+    - name: installing git
+      yum: pkg=git state=absent
+      tags: a
+
+    - name: installing maven
+      yum: pkg=maven state=absent
+      tags: b
+
+    - name: installing java
+      action: yum pkg=java-1.8.0-openjdk state=absent
+      tags: c
+
+    - name: installing httpd
+      shell: yum install httpd -y
+      tags: d
+
+    - name: installing tree
+      command: yum install tree -y
+      tags: e
+
+    - name: installing docker
+      raw: yum install docker -y
+      tags: f
+
+SINGLE TAG: ansible-playbook playbook1.yml --tags a
+MULTI TAG:ansible-playbook playbook1.yml --tags e,f
+SKIPPED TAGS: ansible-playbook playbook1.yml --skip-tags "e"
+
+
+HISTORY:
+
+ 62  ansible all -m yum -a "pkg=git state=present"
+   63  ansible all -a "yum remove git* -y"
+   64  ansible all -m yum -a "pkg=git state=present"
+   65  ansible all -m yum -a "pkg=java state=present"
+   66  ansible all -m yum -a "pkg=httpd state=present"
+   67  ansible all -m yum -a "pkg=httpd state=absent"
+   68  ansible all -m yum -a "pkg=httpd state=present"
+   69  ansible all -m service -a "name=httpd state=started"
+   70  ansible all -a service -a "name=httpd state=stop"
+   71  ansible all -m service -a "name=httpd state=stop"
+   72  ansible all -m service -a "name=httpd state=stopped"
+   73  ansible all -m user -a "name=abcd state=present"
+   74  ansible all -a "cat /etc/passwd"
+   75  ll
+   76  cat>file1
+   77  ll
+   78  ansible all -a "ls"
+   79  mv file1 file2
+   80  ll
+   81  ansible all -m copy -a "src=file2, dest=/root"
+   82  ansible all -m copy -a "src=file2 dest=/root"
+   83  LL
+   84  rm -rf file2
+   85  vim playbook1.yml
+   86  ansible all -a "yum remove git* -y"
+   87  ll
+   88  ansible-playbook playbook1.yml
+   89  ansible all -a "yum remove git* -y"
+   90  cat playbook1.yml
+   91  vim playbook1.yml
+   92  ansible-playbook playbook1.yml
+   93  vim playbook1.yml
+   94  ansible-playbook playbook1.yml
+   95  vim playbook1.yml
+   96  ansible-playbook playbook1.yml
+   97  vim playbook1.yml
+   98  ansible-playbook playbook1.yml
+   99  vim playbook1.yml
+  100  ansible-playbook playbook1.yml
+  101  vim playbook1.yml
+  102  ansible-playbook playbook1.yml
+  103  vim playbook1.yml
+  104  ansible-playbook playbook1.yml
+  105  vim playbook1.yml
+  106  ansible-playbook playbook1.yml
+  107  vim playbook1.yml
+  108  cat playbook1.yml
+  109  ansible-playbook playbook1.yml --tags d
+  110  ansible-playbook playbook1.yml --tags a,c
+  111  ansible all -a "yum remove git* java-1.8.0-openjdk* -y"
+  112  ansible-playbook playbook1.yml --tags a,c
+  113  ansible-playbook playbook1.yml --tags "a,c"
+  114  cat playbook1.yml
+  115  ansible-playbook playbook1.yml --tags e,f
+  116  cat playbook1.yml
+  117  ansible all -a "yum remove git* java-1.8.0-openjdk* docker* tree* -y"
+  118  cat playbook1.yml
+  119  ansible-playbook playbook1.yml --skip-tags "e"
+  120  history
+
