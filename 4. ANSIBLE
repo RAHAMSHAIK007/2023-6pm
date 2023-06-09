@@ -378,3 +378,246 @@ HISTORY:
   119  ansible-playbook playbook1.yml --skip-tags "e"
   120  history
 
+================================================================================
+
+DAY-03:
+
+VARIABLE: Used to assign the value which will vary as per the requirement.
+STATIC: Defines inside the playbook.
+DYNAMIC: Passing the variable during executing the playbook.
+
+SINGLE STATIC EXAMPLE:
+- hosts: all
+  vars:
+    a: tree
+  tasks:
+    - name: installing java
+      yum: name={{a}} state=present
+
+ansible-playbook playbook2.yml
+
+
+MULTIPLE STATIC VARIABLE:
+
+- hosts: all
+  vars:
+    a: tree
+    b: docker
+  tasks:
+    - name: task-1
+      yum: name={{a}} state=present
+
+    - name: task-2
+      yum: name={{b}} state=present
+
+ansible-playbook playbook2.yml
+
+- hosts: all
+  vars:
+    a: tree
+    b: docker
+  tasks:
+    - name: task-1
+      yum: name={{a}} state=present
+      yum: name={{b}} state=present
+
+ansible-playbook playbook2.yml
+
+
+SINGLE DYNAMIC EXAMPLE:
+- hosts: all
+  tasks:
+    - name: installing java
+      yum: name={{a}} state=present
+
+ansible-playbook playbook2.yml --extra-vars "a=maven"
+
+- hosts: all
+  tasks:
+    - name: task-1
+      yum: name={{a}} state=present
+      yum: name={{b}} state=present
+
+ansible-playbook playbook2.yml --extra-vars "a=maven, b=tree"
+
+- hosts: all
+  tasks:
+    - name: installing {{a}}
+      yum: pkg={{a}} state=present
+    - name: installing {{b}}
+      yum: pkg={{b}} state=present
+
+ansible-playbook playbook1.yml --extra-vars "a=docker b=maven"
+==================================================================
+
+LOOPS: will run until it satisfies the condition.
+
+- hosts: all
+  tasks:
+    - name: task-1
+      yum: name={{item}} state=present
+      with_items:
+        - git
+        - maven
+        - docker
+        - httpd
+        - tree
+        - java-1.8.0-openjdk
+
+
+- hosts: all
+  tasks:
+    - name: task-1
+      user: name={{item}} state=present
+      with_items:
+        - user1
+        - user2
+        - user3
+        - user4
+        - user5
+        - user6S
+
+
+
+
+
+================================================================
+
+CONDITIONS:
+
+CLUSTER: Group of servers which can be connected.
+HOMOGENIUS CLUSTER: All the servers have the same os flavor.
+HETROGENIUS CLUSTER: All the servers have Different os flavor.
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING TREE ON REDHAT
+      command: yum install tree -y
+      when: ansible_os_family == "RedHat"
+    - name: INSTALLING TREE ON UBUNTU
+      command: apt install tree -y
+      when: ansible_os_family == "Debian"
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING TREE ON REDHAT
+      command: yum install docker -y
+      when: ansible_os_family == "RedHat"
+    - name: INSTALLING TREE ON UBUNTU
+      command: apt install docker -y
+      when: ansible_os_family == "Debian"
+
+ansible -m setup all | grep -i family
+==================================================================
+
+HANDLERS: one task is linked with another task.
+the task will execute when it will be called by another task.
+will consist of a notify that indicates we need to start another task.
+
+NOTE: Notify and name will be same if not we will get error.
+
+- hosts: all
+  tasks:
+    - name: INSTALLING HTTPD
+      command: yum install httpd -y
+
+    - name: RESTARTING HTTPD
+      command: systemctl restart httpd
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING HTTPD
+      command: yum install httpd -y
+      notify: RESTARTING HTTPD
+  handlers:
+    - name: RESTARTING HTTPD
+      command: systemctl restart httpd
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING DOCKER
+      command: yum install docker -y
+      notify: RESTARTING DOCKER
+  handlers:
+    - name: RESTARTING DOCKER
+      command: systemctl restart docker
+
+
+==================================================================
+
+VAULT: Used to store the data in encryption format (AES256)
+
+ansible-vault create creds.txt
+ansible-vault edit creds.txt
+ansible-vault rekey creds.txt
+ansible-vault decrypt creds.txt
+ansible-vault encrypt creds.txt
+ansible-vault view creds.txt
+
+NOTE: ansible-vault will encrypt the playbook as well
+so when you encrypt it will ask password and if you want to run the playbook you need to give that password, if not playbook will not be executed.
+
+ansible-vault decrypt playbook2.yml
+
+
+
+HISTORY:
+
+ 121  ansible all --list-hosts
+  122  vim playbook1.yml
+  123  ansible-playbook playbook1.yml
+  124  vim playbook1.yml
+  125  ansible-playbook playbook1.yml
+  126  vim playbook1.yml
+  127  ansible-playbook playbook1.yml --extra-vars "a=docker b=maven"
+  128  vim playbook1.yml
+  129  ansible all -a "yum remove git* docker* tree* maven* -y"
+  130  cat playbook1.yml
+  131  ansible-playbook playbook1.yml --extra-vars "a=docker b=maven"
+  132  cat playbook1.yml
+  133  ansible all -a "yum remove git* docker* tree* maven* -y"
+  134  vim playbook1.yml
+  135  ansible-playbook playbook1.yml
+  136  vim playbook1.yml
+  137  ansible-playbook playbook1.yml
+  138  vim playbook1.yml
+  139  ansible-playbook playbook1.yml
+  140  ansible all -a "cat /etc/passwd"
+  141  vim playbook1.yml
+  142  ansible -m setup dev[0]
+  143  ansible -m setup dev[1]
+  144  ansible-playbook playbook1.yml
+  145  vim playbook1.yml
+  146  ansible -m setup all
+  147  ansible -m setup all | grep -i family
+  148  ansible-playbook playbook1.yml
+  149  vim playbook1.yml
+  150  ansible-playbook playbook1.yml
+  151  vim creds.txt
+  152  ll
+  153  cat creds.txt
+  154  ansible-vault create creds1.txt
+  155  cat creds1.txt
+  156  ansible-vault edit creds1.txt
+  157  cat creds1.txt
+  158  ansible-vault rekey creds1.txt
+  159  ansible-vault decrypt creds1.txt
+  160  cat creds1
+  161  cat creds1.txt
+  162  ansible-vault encrypt creds1.txt
+  163  cat creds1.txt
+  164  ansible-vault view creds1.txt
+  165  cat creds1.txt
+  166  ll
+  167  rm -rf creds*
+  168  ll
+  169  ansible-vault encrypt playbook1.yml
+  170  ansible-playbook playbook1.yml
+  171  cat playbook1.yml
+  172  ansible-vault decrypt playbook1.yml
+  173  history
+
