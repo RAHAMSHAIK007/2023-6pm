@@ -621,3 +621,128 @@ HISTORY:
   172  ansible-vault decrypt playbook1.yml
   173  history
 
+=============================================
+
+DAY-04:
+
+CONETNT:
+
+- hosts: all
+  tasks:
+    - name: COPYING THE CONTENT
+      copy:
+        dest: "abc.txt"
+        content: |
+          HAI ALL
+
+
+==================================================================
+
+PYTHON MODULES: Used to manage Python libraries on the remote servers.
+
+Linux: yum or apt
+Python: pip 
+
+ansible all -a "yum install pip -y"
+
+- hosts: all
+  tasks:
+    - name: INSTALLING NumPy
+      pip:
+        name: NumPy
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING Pandas
+      pip:
+        name: Pandas
+
+==================================================================
+
+RAW VS COMMAND VS SHELL:
+
+RAW: To execute Linux commands as like commands, shell modules.
+
+
+- hosts: all
+  tasks:
+    - name: INSTALLING TREE
+      shell: yum install tree -y
+
+    - name: INSTALLING docker
+      command: yum install docker -y
+
+    - name: INSTALLING maven
+      raw: yum install maven -y
+
+
+=======================================================================
+
+ROLES: Managing playbooks into a directory structure.
+diving the playbooks.
+we can encapsulate the data.
+
+
+
+mkdir playbooks
+.
+├── master.yml
+└── roles
+    ├── role1
+    │   └── tasks
+    │       └── main.yml
+    ├── role2
+    │   └── tasks
+    │       └── main.yml
+    └── role3
+        └── tasks
+            └── main.yml
+
+vim roles/role1/tasks/main.yml
+vim roles/role2/tasks/main.yml
+vim roles/role3/tasks/main.yml
+
+==============================================================================================
+
+ANSIBLE GALAXY: Used to store roles.
+
+I wrote one role -- > upload to ansible-galaxy -- > other people can use it.
+
+if we install a role it will come with the skeleton of the structure.
+
+
+===================================================================================================
+ASYNCHRONOUS ACTIONS & POLLING :
+
+async: time limit
+poll: diff
+
+- hosts: all
+  tasks:
+    - name: INSTALLING TREE
+      shell: yum install tree -y
+
+    - name: stopping the task
+      command: sleep 20
+      async: 30
+      poll: 10
+
+    - name: INSTALLING docker
+      command: yum install docker -y
+
+- hosts: all
+  tasks:
+    - name: INSTALLING TREE
+      shell: yum install tree -y
+
+    - name: stopping the task
+      command: sleep 30
+      async: 20
+      poll: 10
+
+    - name: INSTALLING docker
+      command: yum install docker -y
+
+
+
