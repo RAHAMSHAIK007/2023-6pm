@@ -745,4 +745,115 @@ poll: diff
       command: yum install docker -y
 
 
+HISTORY:
+
+  1  passwd root
+    2  visudo
+    3  vim /etc/ssh/sshd_config
+    4  systemctl restart sshd
+    5  systemctl status sshd
+    6  amazon-linux-extras install ansible2 -y
+    7  yum install python python-pip python-level -y
+    8  vim /etc/ansible/hosts
+    9  vim /etc/ansible/ansible.cfg
+   10  ssh-keygen
+   11  ssh-copy-id root@172.31.33.217
+   12  ssh 172.31.33.217
+   13  ssh-copy-id root@172.31.47.217
+   14  ssh 172.31.47.21
+   15  ssh-copy-id root@172.31.32.235
+   16  ssh 172.31.32.235
+   17  ssh-copy-id root@172.31.37.207
+   18  ssh 172.31.37.207
+   19  cat .ssh/known_hosts
+   20  ansible all --list-hosts
+   21  vim playbook.yml
+   22  ll
+   23  mkdir playbook
+   24  cd playbook/
+   25  vim master.yml
+   26  cat master.yml
+   27  mkdir roles
+   28  mkdir roles/role1
+   29  vim roles/role1/main.yml
+   30  yum install tree -y
+   31  tree
+   32  cat  master.yml
+   33  mkdir roles/role2/
+   34  vim roles/role2/main.yml
+   35  tree
+   36  vim master.yml
+   37  cat master.yml
+   38  tree
+   39  cat master.yml
+   40  ansible-playbook master.yml
+   41  tree
+   42  mkdir roles/role1/tasks
+   43  mv roles/role1/main.yml roles/role1/tasks/main.yml
+   44  tree
+   45  mkdir roles/role2/tasks
+   46  mv roles/role2/main.yml roles/role2/tasks/main.yml
+   47  tree
+   48  ansible-playbook master.yml
+   49  vim master.yml
+   50  ansible-playbook master.yml
+   51  tree
+   52  mkdir roles/role3
+   53  mkdir roles/role3/tasks
+   54  vim roles/role3/tasks/main.yml
+   55  tree
+   56  vim master.yml
+   57  ansible-playbook master.yml
+   58  tree
+   59  cat master.yml
+   60  cd
+   61  rm -rf *
+   62  ansible-galaxy install raham
+   63  ansible-galaxy install raham --ignore-errors
+   64  ll
+   65  ansible-galaxy install role raham
+   66  ansible-galaxy init raham
+   67  ll
+   68  tree
+   69  cat raham/tasks/main.yml
+   70  ansible-galaxy init abc
+   71  ll
+   72  ansible-galaxy search java
+   73  ansible-galaxy init abessifi.ja
+   74  ll
+   75  tree abessifi.java/
+   76  cat abessifi.java/tasks/main.yml
+   77  ansible-galaxy search elasticsearch
+   78  ansible-galaxy init alikins.elasticsearch
+   79  ll
+   80  ansible-galaxy seacrh --author alikins
+   81  ansible-galaxy search --author alikins
+   82  mazer install alikins.top_geerlingguy
+   83  ansible-galaxy init  alikins.top_geerlingguy
+   84  ll
+   85  tree alikins.top_geerlingguy/
+   86  cat alikins.top_geerlingguy/vars/main.yml
+   87  ll
+   88  rm -rf *
+   89  vim abc.yml
+   90  ansible-playbook abc.yml
+   91  ansible all -a "yum remove tree* docker* git* -y"
+   92  vim abc.yml
+   93  ansible-playbook abc.yml
+   94  ansible all -a "yum remove tree* docker* git* -y"
+   95  ll
+   96  ansible all -a "yum install pip -y"
+   97  ansible all -a "yum install NumPy -y"
+   98  vim abc.yml
+   99  ansible-playbook abc.yml
+  100  vim abc.yml
+  101  ansible-playbook abc.yml
+  102  vim abc.yml
+  103  ansible-playbook abc.yml
+  104  vim abc.yml
+  105  ansible-playbook abc.yml
+  106  hostnamectl set-hostname ansible
+  107  sudo -i
+  108  ll
+  109  history
 
