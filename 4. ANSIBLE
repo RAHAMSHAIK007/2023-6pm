@@ -857,3 +857,112 @@ HISTORY:
   108  ll
   109  history
 
+=====================================================================
+
+DAY-05:
+
+ANSIBLE STRATEGIES: it is mainly two types
+
+1. linear: this will execute the first task on server-1, server-2 & second task again on server-1, server-2
+2. free: it will not follow the order 
+
+
+cat playbook1.yml
+- hosts: dev
+  strategy: linear
+  tasks:
+    - name: INSTALLING HTTPD
+      shell: yum install httpd -y
+
+    - name: INSTALLING MAVEN
+      command: yum install maven -y
+
+
+cat playbook2.yml
+- hosts: dev
+  strategy: free
+  tasks:
+    - name: INSTALLING TREE
+      shell: yum install tree -y
+
+    - name: INSTALLING docker
+      command: yum install docker -y
+
+=================================================================================================================
+
+JINJA2-TEMPLATES: Used to produce customized outputs.
+
+
+
+=================================================================================================================
+
+DEBUG MODULE: To print the message 
+
+- hosts: dev
+  tasks:
+    - debug:
+        msg: "hai all good morning"
+
+
+
+vars inside the debug moudle:
+
+- hosts: dev
+  vars:
+    name: raham
+    loc: hyderabad
+  tasks:
+    - debug:
+        msg: "hai all good morningi, i'm {{name}}, im residing on {{loc}}"
+
+=================================================================================================================
+
+LOOKUPS: Used to get data from files, databases, key/value stores, APIs, and other services.
+
+
+cat playbook3.yml
+- hosts: dev
+  vars:
+    dns: "{{lookup('file', '/root/dns.txt') }}"
+  tasks:
+    - debug:
+        msg: "hai my dns values are {{dns}}"
+
+cat dns.txt
+dns-1: ec2-54-208-53-173.compute-1.amazonaws.com
+dns-2: ec2-44-211-41-55.compute-1.amazonaws.com
+
+
+cat playbook3.yml
+- hosts: dev
+  vars:
+    ami: "{{lookup('file', '/root/ami.txt') }}"
+  tasks:
+    - debug:
+        msg: "hai my ami values are {{ami}}"
+
+cat ami.txt
+dev-1: ami-06a0cd9728546d178
+dev-2: ami-06a0cd9728546d178
+
+=======================================================================================================================
+
+
+DEPLOYMENT:
+
+- hosts: test
+  tasks:
+    - name: installing httpd
+      yum: name=httpd state=present
+
+    - name: starting the web server
+      service: name=httpd state=started
+
+    - name: installing git
+      yum: pkg=git state=present
+
+    - name: git checkout
+      git:
+        repo: "https://github.com/CleverProgrammers/pwj-netflix-clone.git"
+        dest: "/var/www/html/"
+
