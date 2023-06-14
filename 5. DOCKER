@@ -1,0 +1,119 @@
+DAY-02:
+
+DOCKER CLINET: Takes input from the user and executes the command. it will connect with the daemon.
+DOCKER HOST: Where we installed docker (windows, Linux and macOS)
+DOCKER DAEMON: It will manage docker components (Image, Container, volumes ----)
+DOCKER REGISTRY: It will have all images for docker.
+
+
+DOCKER IMAGE will consist of OS, SOFTWARES & Packages.
+
+
+docker images: to check the images list
+docker pull ubuntu: it will pull the ubuntu image from the docker registry.
+docker run ubuntu: to run a container
+docker container ls : to list the containers (docker ps)
+docker container ls -a : to list all the containers (docker ps -a)
+docker run --name cont1 amazonlinux 
+
+-it : interactive terminal -- > to go inside a container
+
+docker run -it --name cont2 amazonlinux 
+install some packages
+ctrl p q: to come out of a container
+
+docker commit cont2 zomato:v1
+
+
+
+DOCKER FILE: is used to create an image automatically
+here we use COMPONENTS which starts with capital letter.
+in Docker file D is capital. if it is not capital it wont work.
+we can reuse the Dockerfile.
+
+FROM	: Used for Base image
+RUN 	: Used to run linux commands During image creation.
+CMD 	: Used to run linux commands During container creation.
+ENTRYPOINT: More priority than CMD, it will override the CMD.
+COPY	: Used to copy local files to container
+ADD	: Used to copy internet files to container
+WORKDIR : used to go inside a specific folder
+ENV	: used to give env variables inside container
+ARGS	: used to give  variables outside container
+LABEL	: Used to give labels for containers
+
+docker inspect cont12	: gives complete information about container 12
+
+HISTORY:
+
+ 83  yum install docker -y
+   84  docker --version
+   85  docker -v
+   86  docker version
+   87  systemctl start docker
+   88  systemctl status docker
+   89  docker version
+   90  docker images
+   91  docker pull amazonlinux
+   92  docker images
+   93  df -h
+   94  docker run amazonlinux
+   95  docker container ls
+   96  docker container ls -a
+   97  docker run --name cont1 amazonlinux
+   98  docker container ls -a
+   99  docker run -it --name cont2 amazonlinux
+  100  docker container ls
+  101  docker container ls -a
+  102  docker ps
+  103  docker ps -a
+  104  docker ps
+  105  docker attach cont2
+  106  docker ps
+  107  docker images
+  108  docker commit cont2 zomato:v1
+  109  docker images
+  110  docker run -it --name cont3 zomato:v1
+  111  docker ps
+  112  vim Dockerfile
+  113  docker images
+  114  docker build -t zomato:v2
+  115  docker build -t zomato:v2 .
+  116  vim Dockerfile
+  117  docker build -t zomato:v2 .
+  118  dockre images
+  119  docker images
+  120  cat Dockerfile
+  121  docker run -it --name cont4 zomato:v2
+  122  vim Dockerfile
+  123  docker build -t zomato:v3 .
+  124  docker run -it --name cont6 zomato:v3
+  125  vim Dockerfile
+  126  docker build -t zomato:v3 .
+  127  docker ps -a
+  128  docker run -it --name cont7 zomato:v3
+  129  docker ps -a
+  130  ll
+  131  cat file1
+  132  ls
+  133  cat file1
+  134  vim Dockerfile
+  135  docker build -t swiggy:v3 .
+  136  docker run -it --name cont8 swiggy:v3
+  137  vim Dockerfile
+  138  docker build -t swiggy:v3 .
+  139  docker run -it --name cont9 swiggy:v3
+  140  vim Dockerfile
+  141  docker build -t swiggy:v3 .
+  142  docker run -it --name cont10 swiggy:v3
+  143  vi Dockerfile
+  144  docker build -t swiggy:v3 .
+  145  docker run -it --name cont11 swiggy:v3
+  146  vim Dockerfile
+  147  docker build -t swiggy:v3 .
+  148  docker run -it --name cont12 swiggy:v3
+  149  docker inspect cont12
+  150  history
+
+
+
