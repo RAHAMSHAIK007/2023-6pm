@@ -116,4 +116,337 @@ HISTORY:
   150  history
 
 
+==================================================
+
+DAY-03:
+
+1. DOCKER FILE
+
+FROM ubuntu
+VOLUME ["/volume1"]
+
+
+docker build -t swiggy:v1 .
+docker run -it --name cont1 swiggy:v1
+cd /volume1
+touch file{1..5}
+exit
+
+docker run -it --name cont2 --volumes-from cont1 --privileged=true ubuntu
+cd /volume1
+touch file{6..10}
+exit
+
+2. COMMAND
+docker run -it --name cont4 -v volume2 ubuntu
+cd /volume2
+touch java{1..5}
+exit
+
+docker run -it --name cont5 --volumes-from cont4 --privileged=true ubuntu
+cd /volume2
+
+3. MOUNTING
+
+docker run -it --name cont6 --mount source=volume3,destination=/volume3 ubuntu
+
+docker volume ls		: to list the volumes
+docker volume create volume3 	: to create volume
+docker volume inspect volume3 	: to get complete info
+cd /var/lib/docker/volumes/volume3/_data
+docker volume prune		: to remove all unused volumes
+docker volume rm volume6	: to remove a specifc volume
+
+docker system commands:
+
+docker system df	: to show size of docker components
+docker system df -v	: to show size of docker components in complete way
+docker system prune	: to all unused docker components
+
+4. HOST -- > CONATINER
+
+cd /home/ec2-user
+touch php{1..5}
+docker run -it --name cont9 -v /home/ec2-user:/hostvolume --privileged=true ubuntu
+
+
+DEPLOYMENT:
+
+vim Dockerfile
+FROM ubuntu
+RUN apt-get update -y
+RUN apt-get install apache2 -y
+COPY index.html /var/www/html/
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
+
+docker build -t rahamapp:v1 .
+docker run -itd --name rahamappcont1 -p 81:80 rahamapp:v1
+
+publcip:81
+
+index.html
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)} 
+  to {-webkit-transform: scale(1)}
+}
+  
+@keyframes animatezoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<h2>Modal Login Form</h2>
+
+<button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+
+<div id="id01" class="modal">
+  
+  <form class="modal-content animate" action="/action_page.php" method="post">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+      <img src="img_avatar2.png" alt="Avatar" class="avatar">
+    </div>
+
+    <div class="container">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="uname" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+        
+      <button type="submit">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </form>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('id01');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
+</body>
+</html>
+
+
+ 66  yum install docker -y
+   67  systemctl start docker
+   68  systemctl status docker
+   69  vim Dockerfile
+   70  docker build -t swiggy:v1
+   71*
+   72  docker images
+   73  docker run -it --name cont1 swiggy:v1
+   74  docker ps -a
+   75  docker run -it --name cont2 --volumes-from cont1 --privileged=true ubuntu
+   76  docker ps -a
+   77  docker attach cont1
+   78  docker run -it --name cont3 --volumes-from cont1 --privileged=true ubuntu
+   79  cat Dockerfile
+   80  docker ps
+   81  dockerr images
+   82  docker images
+   83  docker run -it --name -v abcd cont4
+   84  docker run -it --name -v abcd cont4 ubuntu
+   85  docker ps
+   86  docker run -it --name cont4 -v volume2 ubuntu
+   87  docker run -it --name cont5 --volumes-from cont4 --privileged=true ubuntu
+   88  docker volume ls
+   89  docker volume create volume3
+   90  docker volume ls
+   91  docker volume inspect volume3
+   92  cd /var/lib/docker/volumes/volume3/_data
+   93  ll
+   94  touch python{1..5}
+   95  vim python1
+   96  ll
+   97  docker run -it --name cont6 --mount source=/volume3 dest=/volume3 ubuntu
+   98  docker run -it --name cont6 --mount source=/volume3 destinatio=/volume3 ubuntu
+   99  docker run -it --name cont6 --mount source=/volume3,destinatio=/volume3 ubuntu
+  100  docker run -it --name cont6 --mount source=/volume3,destination=/volume3 ubuntu
+  101  docker run -it --name cont6 --mount source=volume3,destination=/volume3 ubuntu
+  102  ll
+  103  docker attach cont6
+  104  ll
+  105  docker volume create volume4
+  106  docker volume create volume5
+  107  docker volume ls
+  108  docker volume create volume6
+  109  docker volume ls
+  110  docker system
+  111  docker system df
+  112  docker system df -v
+  113  docker system prune
+  114  docker volume ls
+  115  docker volume prune
+  116  docker volume create volume6
+  117  docker volume rm volume6
+  118  docker volume ls
+  119  docker volume rm volume3
+  120  cd /home/ec2-user/
+  121  ll
+  122  ls -al
+  123  touch php{1..5}
+  124  ls -al
+  125  docker run -it --name cont7 -v /home/ec2-user=/hostvolume ubuntu
+  126  docker run -it --name cont7 -v /home/ec2-user=/hostvolume --privileged=true ubuntu
+  127  docker run -it --name cont8 -v /home/ec2-user=/hostvolume --privileged=true ubuntu
+  128  docker run -it --name cont9 -v /home/ec2-user:/hostvolume --privileged=true ubuntu
+  129  docker volume ls
+  130  docker run -it --name jenkinscont -p 8080:8080 jenkins/jenkins:lts
+  131  docker ps
+  132  docker ps -q
+  133  docker ps -a
+  134  docker ps -a -q
+  135  docker stop $(docker ps -a -q)
+  136  docker ps -a
+  137  docker ps -a -a
+  138  docker ps -a -q
+  139  docker rm $(docker ps -a -q)
+  140  docker ps -a
+  141  cd
+  142  vim Dockerfile
+  143  ll
+  144  rm -rf file*
+  145  ll
+  146  vim index.html
+  147  docker build -t rahamapp:v1 .
+  148  docker run -itd --name rahamappcont1 -p 81:80 rahamapp:v1
+  149  docker ps
+  150  docker run -itd --name rahamappcont1 -p 82:80 rahamapp:v1
+  151  docker run -itd --name rahamappcont2 -p 83:80 rahamapp:v1
 
