@@ -450,3 +450,161 @@ window.onclick = function(event) {
   150  docker run -itd --name rahamappcont1 -p 82:80 rahamapp:v1
   151  docker run -itd --name rahamappcont2 -p 83:80 rahamapp:v1
 
+================================================================================================================================================
+
+DAY-04:
+
+
+INSTALL:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+ls /usr/local/bin/
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+docker-compose version
+
+create images:
+
+
+docker-compose.yml
+version: '3'
+services:
+  movies:
+    image: paymovies:v1
+    ports:
+      - "8000:80"
+    volumes:
+      - "moviesvolume"
+  train:
+    image: paytrain:v1
+    ports:
+      - "8001:80"
+    volumes:
+      - "trainvolume"
+  rechatge:
+    image: payrecharge:v1
+    ports:
+      - "8002:80"
+    volumes:
+      - "rechargevolume"
+
+docker-compose up -d
+docker ps 
+access it from port numbers
+
+docker-compose down 	: to stop and remove the containers
+docker-compose images	: to show images used by docker compose only
+docker-compose ps	: to show the containers created by docker compose only
+docker-compose stop	: to stop the containers created by docker compose only
+docker-compose start	: to start the containers created by docker compose only
+docker-compose pause	: to pause the containers created by docker compose only
+docker-compose unpause	: to unpause the containers created by docker compose only
+docker-compose logs	: to show the logs created by docker compose only
+
+
+working with custom file:
+
+mv docker-compose rahamcompose.yml 
+docker-compose -f rahamcompose.yml up -d
+
+
+DOCKER HUB: To store the images on the centrol repo.
+
+https://hub.docker.com/signup
+
+ 69  docker version
+   70  systemctl start docker
+   71  systemctl status docker
+   72  sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   73  ls /usr/local/bin/
+   74  sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+   75  sudo chmod +x /usr/local/bin/docker-compose
+   76  docker-compose version
+   77  vim Dockerfile
+   78  vim index.html
+   79  docker build -t paymovies:v1 .
+   80  docker images
+   81  vim index.html
+   82  docker build -t paytrain:v1 .
+   83  docker images
+   84  vim docker-compose.yml
+   85  cat docker-compose.yml
+   86  docker ps -a
+   87  docker-compose up -d
+   88  vim docker-compose.yml
+   89  docker-compose up -d
+   90  docker ps -a
+   91  vim index.html
+   92  docker build -t payrecharge:v1 .
+   93  docker images
+   94  vim docker-compose.yml
+   95  docker-compose up -d
+   96  docker ps
+   97  ll
+   98  docker-compose down
+   99  docker ps
+  100  cat docker-compose.yml
+  101  docker-compose up -d
+  102  docker ps
+  103  docker images
+  104  docker pull nginx
+  105  docker pull jenkins/jenkins:lts
+  106  docker images
+  107  docker-compose images
+  108  docker-compose ps
+  109  docker-compose service
+  110  docker-compose stop
+  111  docker ps
+  112  docker ps -a
+  113  docker-compose start
+  114  docker ps -a
+  115  docker-compose  pause
+  116  docker ps -a
+  117  docker-compose  unpause
+  118  docker ps -a
+  119  docker-compose events
+  120  ps
+  121  kill -9 8291 8292
+  122  ps
+  123  docker-compose
+  124  docker-compose events
+  125  docker-compose events root_rechatge_1
+  126  docker ps
+  127  docker-compose logs
+  128  docker volume ls
+  129  docker-compose volume
+  130  docker ps
+  131  docker-compose down
+  132  docker ps
+  133  ll
+  134  rm -rf Dockerfile file* index.html
+  135  ll
+  136  mv docker-compose.yml rahamcompose.yml
+  137  ll
+  138  docker-compose up -d
+  139  docker-compose -f rahamcompose.yml up -d
+  140  docker-compose -f rahamcompose.yml stop
+  141  docker images
+  142  docker tag payrecharge:v1 sathishkonanki228/repo1
+  143  docker images
+  144  docker push sathishkonanki228/repo1
+  145  docker login
+  146  docker push sathishkonanki228/repo1
+  147  docker system df -v
+  148  dockr images
+  149  docker images
+  150  docker tag paymovies:v1 sathishkonanki228/repo2
+  151  docker images
+  152  docker push sathishkonanki228/repo2
+  153  docker images
+  154  docker rmi -f jenkins/jenkins:lts
+  155  docker images
+  156  docker ps -a -q
+  157  docker images -a -q
+  158  docker rmi -f $(docker images -a -q)
+  159  docker images
+  160  dockerr pull sathishkonanki228/repo2:latest
+  161  docker pull sathishkonanki228/repo2:latest
+  162  docker images
+  163  docker inspect sathishkonanki228/repo2
+
