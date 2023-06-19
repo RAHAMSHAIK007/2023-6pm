@@ -608,3 +608,121 @@ https://hub.docker.com/signup
   162  docker images
   163  docker inspect sathishkonanki228/repo2
 
+==================================================================================================
+
+DAY-05:
+
+HIGH AVAILABILITY - MORE THAN ONE SERVER
+WHY - IF ONE SERVER GOD TERMINATED WE HAVE ANOTHER ONE FOR BACKUP
+CLUSTER - GROUP OF SERVERS
+
+DOCKER SWARM:
+Its an orchestration too1.
+it will have manager nodes and worker nodes.
+to create multiple conatiners on multiple nodes.
+in docker swarm image must be on dockerhub.
+
+SETUP: CREATE 3 NODE WITH ALL TRAFFIC
+yum install docker -y
+systemctl start docker
+systemctl status docker
+docker version
+hostnamectl set-hostname manager
+hostnamectl set-hostname worker-1
+hostnamectl set-hostname worker-2
+
+GO TO MANAGER NODE:
+docker swarm init --advertise-addr 172.31.25.115
+copy the token to all servers
+
+SERVICE: A feature of an application
+REPLICA: Copy of a container
+
+docker service create --name phoenpaymovies --replicas 6 --publish 81:80 rahamshaik/phonepaymovies:v1
+
+docker swarm leave -- > workernode
+docker node rm node-id
+docker swarm join-token manager
+
+DOCKER NETWORK:
+docker network ls
+docker network create raham
+docker network inspect raham
+docker network connect raham container-name/id
+docker network disconnect raham container-name/id
+
+HISTORY:
+
+  2  docker swarm init --advertise-addr 172.31.25.115
+    3  dockerr node ls
+    4  docker node ls
+    5  docker service create --name paytrain --replicas 3 --publish 80:80 rahamshaik/paytmmstrain:latest
+    6  docker ps
+    7  docker service create --name paymovies --replicas 6 --publish 81:80 rahamshaik/paytmmsmovies:latest
+    8  docker ps
+    9  docker service create --name paydth --replicas 6 --publish 82:80 rahamshaik/paytmmsdth:latest
+   10  docker service ls
+   11  docker service rm paymovies
+   12  docker service rm paydth
+   13  docker service ls
+   14  docker service create --name phoenpaymovies --replicas 6 --publish 81:80 logo
+   15  docker service create --name phoenpaymovies --replicas 6 --publish 81:80 rahamshaik/phonepaymovies:v1
+   16  docker service rm phoenpaymovies
+   17  docker service create --name phoenpaymovies --replicas 6 --publish 81:80 rahamshaik/phonepaymovies:v1
+   18*
+   19  docker service paytrain replicas=10
+   20  docker service paytrain scale=10
+   21  docker service paytrain scale replicas=10
+   22  docker service paytrain scale --replicas=10
+   23  docker service scale paytrain=10
+   24  docker service ls
+   25  docker p
+   26  docker ps
+   27  docker service scale paytrain=5
+   28  docker ps
+   29  docker service ls
+   30  docker service ps paytrain
+   31  docker ps
+   32  docker stop 9181cb5718d4
+   33  docker ps
+   34  docker rm  9181cb5718d4
+   35  docker ps
+   36  docker service ls
+   37  docker rm w5j1hosebnr4
+   38  docker service rm w5j1hosebnr4
+   39  docker service rm rhrp5dub26h8
+   40  docker rm w5j1hosebnr4
+   41  docker service ls
+   42  docker ps -a
+   43  docker node ls
+   44  docker node rm 5unr34iolzh7e6dk1wtrl4xwi
+   45  docker node stop 5unr34iolzh7e6dk1wtrl4xwi
+   46  docker node ls
+   47  docker node rm 5unr34iolzh7e6dk1wtrl4xwi
+   48  docker node ls
+   49  docker swarm join-token manager
+   50  docker netwrok ls
+   51  docker network ls
+   52  docker network create raham
+   53  docker network ls
+   54  docker network inspect raham
+   55  docker run -d --name cont1 rahamshaik/phonepaymovies:v1
+   56  docker ps
+   57  docker run -d --name cont2 rahamshaik/phonepaymovies:v1
+   58  docker run -d --name cont3 rahamshaik/phonepaymovies:v1
+   59  docker ps -a -q
+   60  docker network attach d653f72264f5
+   61  docker network connect d653f72264f5
+   62  docker network connect raham d653f72264f5
+   63  docker network inspect raham
+   64  docker ps -a -q
+   65  docker network connect raham 219aafd89d88
+   66  docker ps -a -q
+   67  docker network inspect raham
+   68  docker network connect raham afe68c724c88
+   69  docker network inspect raham
+   70  docker network disconnect raham afe68c724c88
+   71  docker network inspect raham
+   72  docker network disconnect raham cont2
+   73  docker network inspect raham
+   74  history
