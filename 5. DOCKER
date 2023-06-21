@@ -744,3 +744,9 @@ curl -L https://downloads.portainer.io/ce2-16/portainer-agent-stack.yml -o porta
 docker stack deploy -c portainer-agent-stack.yml portainer
  docker ps
 public-ip of swamr master:9000
+
+
+memory & cpu
+
+docker run -itd --name cont5 --memory=250mb ubuntu
+docker run -itd --name cont5 --cpus='0.5' ubuntu
