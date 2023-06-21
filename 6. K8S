@@ -1,0 +1,83 @@
+DAY-01
+
+MASTER NODE:
+
+API SERVER: to execute the commands
+ETCD: To store the cluster information
+SCHEDULER: To schedule the pods
+CONTROLLER: To perform operations scheduled by schedulers.
+
+WORKER NODE:
+
+Kubelet: Its an agent which give iformation to master node.
+kubeproxy: It deals with networking
+pod: group of containers
+
+
+MINIKUBE: Its a single node cluster.
+used to work with k8s on single node.
+in real time we use it dev and test env only.
+we will not use it on prod.
+
+REQ: 2 cpus, 2 Gb ram, 20Gb ebs, docker, ubuntu 20.04
+
+mkdir k8s
+cd k8s
+vim minikube.sh
+
+sudo apt update -y
+sudo apt upgrade -y
+sudo apt install curl wget apt-transport-https -y
+sudo curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+sudo chmod +x /usr/local/bin/minikube
+sudo minikube version
+sudo curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+sudo echo "$(cat kubectl.sha256) kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+sudo minikube start --driver=docker --force
+
+sh minikube.sh
+
+KUBECTL:
+kubectl is the cli tool for k8s.
+we use kubectl to execute commands on k8s.
+
+
+POD:
+it is a group of containers.
+it is a smallest unit in k8s which we can deploy.
+k8s will not work with containers, the works with only pods.
+pod -- > cont -- > app 
+pod can be created on follwing ways
+
+1. IMPERATIVE - by command
+
+kubectl run pod1 --image=nginx
+kubectl get pods/pod/po
+kubectl get po -o wide
+kubectl describe po pod1
+kubectl delete pod pod1
+
+2. DECLARATIVE - by manifest files
+
+vim pod.yml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: raham
+spec:
+  containers:
+    - image: nginx
+      name: cont1
+
+kubectl create -f pod.yml
+kubectl delete -f pod.yml
+
+
+
+
