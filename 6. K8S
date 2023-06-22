@@ -80,4 +80,136 @@ kubectl delete -f pod.yml
 
 
 
+================================================================================
+
+REPLICASET: it will create multiple copies or replicas of a pod.
+if we delete one pod RS will create another pod.
+
+replicaset --- > pods
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    app: swiggy
+  name: swiggy-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: swiggy
+  template:
+    metadata:
+      labels:
+        app: swiggy
+    spec:
+      containers:
+      - name: cont1
+        image: nginx
+
+kubectl get po 
+kubectl get po --show-labels
+kubectl get rs/replicaset
+kubectl describe rs swiggy-rs
+kubectl delete pod swiggy-rs-7nkb2
+kubectl get po 
+kubectl delete rs swiggy-rs
+======================================================================================================================================================
+
+
+DEPLOYMENT: It is used to update the application.
+it will track the changes of an application.
+
+deployment --- > replicaset --- > pods
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: swiggy
+  name: swiggy-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: swiggy
+  template:
+    metadata:
+      labels:
+        app: swiggy
+    spec:
+      containers:
+      - name: cont1
+        image: nginx:1.16
+
+kubectl get po 
+kubectl get po --show-labels
+kubectl get rs/replicaset
+kubectl describe deploy swiggy-deployment
+kubectl edit deployment/swiggy-deployment
+
+SCALING: increasing the pods
+kubectl scale deployment/swiggy-deployment --replicas=10
+kubectl scale deployment/swiggy-deployment --replicas=20
+kubectl scale deployment/swiggy-deployment --replicas=5
+
+
+history:
+
+ 1  mkdir k8s
+    2  cd k8s/
+    3  vim minikube.sh
+    4  sh minikube.sh
+    5  minikube status
+    6  kubectl get po
+    7  kubectl run pod1 --image=nginx
+    8  kubectl get po
+    9  kubectl get po -o wide
+   10  kubectl describe pod pod1
+   11  kubectl delete pod pod1
+   12  kubectl api-resources
+   13  vim raham.yml
+   14  kubectl get po
+   15  kubectl create -f raham.yml
+   16  kubectl get po
+   17  kubectl get po --show-labels
+   18  kubectl describe pod swiggy-rs-7nkb2
+   19  kubectl get replicaset
+   20  kubectl get rs
+   21  kubectl describe rs swiggy-rs
+   22  kubectl get po
+   23  kubectl delete pod swiggy-rs-7nkb2
+   24  kubectl get po
+   25  kubectl delete pod swiggy-rs-hqx6m
+   26  kubectl get po
+   27  kubectl delete rs swiggy-rs
+   28  kubectl get rs
+   29  vim raham.yml
+   30  kubectl get po
+   31  kubectl create -f raham.yml
+   32  kubectl get po
+   33  kubectl get rs
+   34  kubectl get deploy
+   35  kubectl describe deploy swiggy-deployment
+   36  kubectl edit deployment/swiggy-deployment
+   37  kubectl describe deploy swiggy-deployment
+   38  kubectl edit deployment/swiggy-deploymentkubectl get po --show-labels
+   39  kubectl get po --show-labels
+   40  kubectl describe deploy swiggy-deployment
+   41  kubectl edit deploymnet/swiggy-deployment
+   42  kubectl edit deployment/swiggy-deployment
+   43  kubectl describe deploy swiggy-deployment
+   44  kubectl scale deployment/swiggy-deployment scale=10
+   45  kubectl scale deployment/swiggy-deployment replicas=10
+   46  kubectl scale deployment/swiggy-deploymentr --replicas=10
+   47  kubectl scale deployment/swiggy-deployment --replicas=10
+   48  kubectl get po
+   49  kubectl scale deployment/swiggy-deployment --replicas=20
+   50  kubectl get po
+   51  kubectl scale deployment/swiggy-deployment --replicas=5
+   52  kubectl get po
+   53  history
+
+
+
 
