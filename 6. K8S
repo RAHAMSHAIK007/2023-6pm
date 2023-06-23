@@ -294,6 +294,28 @@ export KOPS_STATE_STORE=s3://nareshitdevops.k8s.local
 kops create cluster --name rahams.k8s.local --zones us-east-1a --master-count=1 --master-size t2.medium --node-count=2 --node-size t2.micro
 kops update cluster --name rahams.k8s.local --yes --admin
 
+NAMESPACE:
+
+NAME SPACE:
+
+default
+kube-node-lease
+    This namespace holds Lease objects associated with each node. Node leases allow the kubelet to send heartbeats so that the control plane can detect node failure.
+kube-public
+    This namespace is readable by all clients (including those not authenticated). 
+    This namespace is mostly reserved for cluster usage, in case some resources should be visible and readable publicly throughout the whole cluster. 
+    The public aspect of this namespace is only a convention, not a requirement.
+kube-system
+    The namespace for objects created by the Kubernetes system.
+
+
+kubectl get namespace 
+kubectl create namespace raham
+kubectl config set-context --current --namespace=raham
+
+kubectl config view --minify | grep namespace:
+
+
 
 HISTORY:
 
