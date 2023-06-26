@@ -379,3 +379,228 @@ HISTORY:
    59  cat kops.sh
 
 
+======================================================
+
+DAY-05:
+
+replication controller:
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+
+Deamonset: it will create a single pod on all the servers.
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+
+
+SERVICES: to expose the application
+
+
+ClusterIP: A ClusterIP service provides a stable IP address and DNS name for pods within a cluster. 
+This type of service is only accessible within the cluster and is not exposed externally.
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app: phonepay
+spec:
+  containers:
+    - name: cont1
+      image: rahamshaik/phonepaymovies:v1
+      ports:
+      - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: ClusterIP
+  selector:
+    app: phonepay
+  ports:
+    - port: 80
+      targetPort: 80
+
+
+NodePort: A NodePort service provides a way to expose a service on a static port on each node in the cluster. This type of service is accessible both within the cluster and externally, using the node's IP address and the NodePort. (NODEPORT: 30000-32767)
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app: phonepay
+spec:
+  containers:
+    - name: cont1
+      image: rahamshaik/phonepaymovies:v1
+      ports:
+      - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: NodePort
+  selector:
+    app: phonepay
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30001
+
+LOAD BALANCER: A LoadBalancer service provides a way to expose a service externally, using a cloud provider's load balancer. This type of service is typically used when an application needs to handle high-traffic loads and requires automatic scaling and load balancing capabilities.
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db
+  labels:
+    app: phonepay
+spec:
+  containers:
+    - name: cont1
+      image: rahamshaik/phonepaymovies:v1
+      ports:
+      - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  type: LoadBalancer
+  selector:
+    app: phonepay
+  ports:
+    - port: 80
+      targetPort: 80
+
+What is Kubeadm?
+Lucas Kaldstrom one of the Kubernetes maintainers for kubeadm talked about some of the internals of Kubeadm and also future plans for its ongoing improvements.
+So, what is kubeadm? Kubeadm is a toolkit for bootstrapping and a best-practice for Kubernetes clustering on an existing infrastructure. Kubeadm cannot provision your infrastructure which is one of the main differences to kops. Another differentiator is that Kubeadm can be used not only as an installer but also as a building block.
+Kubeadm sets up a minimal viable cluster. It is designed to have all the components you need in one place in one cluster regardless of where you are running them.
+An advantage of kubeadm is that it can be used anywhere —even Raspberry Pi— to set up a cluster and try it out before committing to something like kops
+
+Kubespray vs Kops vs Kubeadm
+Kubespray runs on bare metal and most clouds, using Ansible as its substrate for provisioning and orchestration. Kubespray is a good choice if you are familiar with Ansible, existing Ansible deployments, or the desire to run a Kubernetes cluster across multiple platforms.
+Kops is more tightly integrated with the unique features of the clouds it supports so it could be a better choice if you know that you will only be using one platform for the foreseeable future. Kops performs the provisioning and orchestration itself, and as such is less flexible in deployment platforms
+Kubeadm provides domain Knowledge of Kubernetes clusters’ life cycle management, including self-hosted layouts, dynamic discovery services, and so on. Kubespray however, does generic configuration management tasks from the “OS operators” ansible world, plus some initial K8s clustering (with networking plugins included) and control plane bootstrapping
+
+
+HISTORY:
+
+
+   24  vim kops.sh
+   25  vim .bashrc
+   26  source .bashrc
+   27  sh kops.sh
+   28  vim kops.sh
+   29  sh kops.sh
+   30  kops validate cluster --wait 10m
+   31  cat kops.sh
+   32  export KOPS_STATE_STORE=s3://devopsbyraham9988.k8s.local
+   33  cat kops.sh
+   34  kops validate cluster --wait 10m
+   35  kops get cluster
+   36  vim rc.yml
+   37  kubectl create -f rc.yml
+   38  kubectl api-resources
+   39  kubectl api-resources | grep -i replication
+   40  vim rc.yml
+   41  kubectl create -f rc.yml
+   42  kubectl api-resources | grep -i replication
+   43  rm -rf *
+   44  vim repliction.yml
+   45  kubectl create -f repliction.yml
+   46  kubectl get rc
+   47  kubectl get po
+   48  kubectl delete po nginx-l4v95
+   49  kubectl get po
+   50  cat repliction.yml
+   51  kubectl get rc
+   52  kubectl delete rc nginx
+   53  kubectl get rc
+   54  vi deamonset.yml
+   55  vim repliction.yml
+   56  kubectl create -f repliction.yml
+   57  vim repliction.yml
+   58  kubectl create -f repliction.yml
+   59  vim repliction.yml
+   60  kubectl create -f repliction.yml
+   61  kubectl get po
+   62  kubectl get no
+   63  cat repliction.yml
+   64  vim clusterip.yml
+   65  kubectl get svc
+   66  kubectl create -f clusterip.yml
+   67  kubectl get po
+   68  kubectl get svc
+   69  kubectl get po --show-labels
+   70  kubectl describe db
+   71  kubectl describe service db
+   72  kubectl describe pod db
+   73  kubectl get svc
+   74  kubectl delete pod db
+   75  kubectl delete svc db
+   76  vim clusterip.yml
+   77  kubectl apply -f clusterip.yml
+   78  kubectl get po,svc
+   79  kubectl get po -o wide
+   80  kubectl get svc
+   81  vim clusterip.yml
+   82  kubectl apply -f clusterip.yml
+   83  kubectl get svc
+   84  vim clusterip.yml
+   85  kubectl apply -f clusterip.yml
+   86  kubectl get svc
+   87  kubectl delete -f clusterip.yml
+   88  vim clusterip.yml
+   89  kubectl apply -f clusterip.yml
+   90  kubectl get po
+   91  kubectl get svc
+   92  history
