@@ -1,0 +1,88 @@
+INFRASTRUCTURE: RESOURCES USED TO RUN OUR APPLICATION ON CLOUD.
+EX: SERVER, VPC, ELB, S3, ASG ETC-------
+
+CLOUD -- > AWS --- > MANUALLY 
+
+LIMITATIONS:
+1. Its time consuming.
+2. It will have chance of doing mistakes.
+3. Delaying the activites.
+
+AUTOMATION WAYS:
+1. CFT -- > CLOUDFORMATION TEMPLATE (JSON/YAML)
+2. ARM -- > AZURE RESOURCE MANAGER
+3. GDE -- > GOOGLE DEPLOY ENGINE
+
+2014 -- > MITCHELL HASIMOTO -- > TERRAFORM
+
+TERRAFORM -- > AWS, GCP, AZURE,
+
+TERRAFORM USES HCL (HASIHICORP CONFIGURATION LANGUAGE) 
+CONFIGURATION FILE: the files which have the resource information
+ex: .tf files
+
+terraform -- > servers < --- configure & deploy by ansible
+
+aws configure 
+
+INSTALLATION:
+
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+
+
+terraform init	: to initalize the provider plugins.
+terraform plan	: to create the execution plan
+terraform apply	: to create the resources
+terraform destroy: to delete the resource
+
+
+statefile: it will store the resource infromation which is created by terraform only.
+terraform state list : to list the resources created by terraform.
+
+target: it is used to delete one specific resource
+
+terraform destroy -target="aws_instance.one[2]"
+
+
+code:
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+count = 5
+}
+
+ 1  aws configure
+    2  sudo yum install -y yum-utils
+    3  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    4  sudo yum -y install terraform
+    5  mkdir terraform
+    6  cd terraform/
+    7  vim main.tf
+    8  cat main.tf
+    9  terraform  init
+   10  terraform plan
+   11  terraform apply
+   12  ll
+   13  cat terraform.tfstate
+   14  terraform destroy
+   15  cat terraform.tfstate
+   16  vim main.tf
+   17  terraform plan
+   18  terraform apply
+   19  ll
+   20  terraform state list
+   21  cat main.tf
+   22  terraform state list
+   23  terraform destroy -target="aws_instance.one[0]"
+   24  terraform state list
+   25  terraform destroy -target="aws_instance.one[1]" -target="aws_instance.one[2]"
+   26  terraform state list
+   27  terraform destroy
+   28  terraform state list
+   29  history
