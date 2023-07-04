@@ -147,3 +147,52 @@ description = ""
 type = number
 default = 5
 }
+
+
+history:
+
+ 126  aws config
+  127  aws configure
+  128  sudo yum install -y yum-utils
+  129  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+  130  sudo yum -y install terraform
+  131  ll
+  132  rm -rf *
+  133  mkdir terraform
+  134  cd terraform/
+  135  vim main.tf
+  136  terraform init
+  137  terraform plan
+  138  vim main.tf
+  139  terraform plan
+  140  terraform apply
+  141  cat main.tf
+  142  terraform destroy
+  143  vim main.tf
+  144  terraform apply --auto-approve
+  145  vim main.tf
+  146  terraform apply --auto-approve
+  147  vim main.tf
+  148  terraform plan
+  149  vim main.tf
+  150  terraform plan
+  151  vim main.tf
+  152  terraform plan
+  153  vim main.tf
+  154  terraform plan
+  155  terraform apply --auto-approve
+  156  cat main.tf
+  157  vim main.tf
+  158  terraform apply --auto-approve
+  159  terraform state list
+  160  terraform destroy --auto-approve
+  161  vim main.tf
+  162  terraform apply --auto-approve
+  163  terraform destroy --auto-approve
+  164  cat main.tf
+  165  vim main.tf
+  166  terraform apply --auto-approve
+  167  terraform state list
+  168  cat terraform.tfstate
+  169  cat main.tf
+  170  history
