@@ -86,3 +86,64 @@ count = 5
    27  terraform destroy
    28  terraform state list
    29  history
+
+
+CODE FOR BUKCTE:
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_s3_bucket" "example" {
+  bucket = "devopsbyraham889900"
+  acl = "private"
+}
+
+
+VARIABLES:
+
+STRING:
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = var.instance_type
+tags = {
+Name = "terraform-server"
+}
+}
+
+variable "instance_type" {
+description = ""
+type = string
+default = "t2.micro"
+}
+
+2. NUMBER:
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+count = var.instance_count
+ami = "ami-04823729c75214919"
+instance_type = var.instance_type
+tags = {
+Name = "terraform-server"
+}
+}
+
+variable "instance_type" {
+description = ""
+type = string
+default = "t2.micro"
+}
+
+variable "instance_count" {
+description = ""
+type = number
+default = 5
+}
