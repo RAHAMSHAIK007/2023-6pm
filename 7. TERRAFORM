@@ -233,3 +233,252 @@ HISTORY:
    52  ll
    53  terraform apply --auto-approve
    54  history
+
+=========================================================
+
+
+
+DAY-03: 
+TFVARS: used to place the values of variable blocks.
+
+[root@ip-172-31-82-190 terraform]# cat main.tf
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+count = var.instance_count
+ami = "ami-053b0d53c279acc90"
+instance_type = var.instance_type
+tags = {
+Name = "raham-terraform01"
+}
+}
+
+[root@ip-172-31-82-190 terraform]# cat variable.tf
+variable "instance_type" {
+
+}
+
+variable "instance_count" {
+
+}
+
+[root@ip-172-31-82-190 terraform]# cat abc.tfvars
+instance_type = "t2.micro"
+
+instance_count = 5
+
+terraform init
+terraform plan -var-file="abc.tfvars"
+terraform apply -var-file="abc.tfvars"
+terraform destroy -var-file="abc.tfvars"
+
+
+=====================================================================================
+
+TERRAFORM CLI: to pass the value from command line.
+to pass values on run time.
+Note: when u r working with cli we need to specify the values anywhere.
+
+cat main.tf
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-053b0d53c279acc90"
+instance_type = var.instance_type
+tags = {
+Name = "raham-terraform01"
+}
+}
+
+variable "instance_type" {
+
+}
+
+terraform apply --auto-approve -var="instance_type=t2.micro"
+terraform destroy --auto-approve -var="instance_type=t2.micro"
+
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = var.instance_ami
+instance_type = var.instance_type
+tags = {
+Name = "raham-terraform01"
+}
+}
+
+variable "instance_type" {
+
+}
+
+variable "instance_ami" {
+
+}
+
+terraform apply --auto-approve -var="instance_ami=ami-04823729c75214919" -var="instance_type=t2.micro"	
+terraform destroy --auto-approve -var="instance_ami=ami-04823729c75214919" -var="instance_type=t2.micro"
+
+===========================================================================================================
+
+WORKSPACE: To isloate the environments.
+in real time we need to work on workspace only.
+if i create one server on one workspace it wont show on another workspace.
+for all the workspaces we can use the common main.tf file.
+default workspace is default only.
+
+terraform workspace list	: to list the workspaces
+terraform workspace new dev	: to create dev workspace
+terraform workspace show	: to show current workspace
+terraform workspace select dev	: to switch to dev workspace
+terraform workspace delete dev	: to delete dev workspace
+
+RULES TO delete workspace 
+1. we need to empty the workspace (removing resource)
+2. we need to switch to another workspace
+3. We cant delete default workspace.
+
+
+TERRAFORM LOCALS:
+we can define the value on local block and use it for multiple times.
+
+
+provider "aws" {
+region = "us-east-1"
+}
+
+locals {
+instance_name = "terra-instance"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.medium"
+tags = {
+Name = local.instance_name
+}
+}
+
+
+provider "aws" {
+region = "us-east-1"
+}
+
+locals {
+instance_name = "${terraform.workspace}"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.medium"
+tags = {
+Name = "${local.instance_name}-instance"
+}
+}
+
+HISTORY:
+ 56  cd terraform/
+   57  ll
+   58  cat main.tf
+   59  vim main.tf
+   60  vim variable.tf
+   61  cat main.tf
+   62  cat variable.tf
+   63  vim abc.tfvars
+   64  cat main.tf
+   65  cat variable.tf
+   66  cat abc.tfvars
+   67  terraform init
+   68  terraform plan
+   69  ll
+   70  terraform plan -var="abc.tfvars"
+   71  terraform plan -var-file="abc.tfvars"
+   72  terraform apply -var-file="abc.tfvars"
+   73  terraform destroy -var-file="abc.tfvars"
+   74  cat main.tf
+   75  cat variable.tf
+   76  cat abc.tfvars
+   77  ll
+   78  rm -rf abc.tfvars
+   79  rm -rf variable.tf
+   80  vim main.tf
+   81  terraform apply --aut-approve
+   82  terraform apply --auto-approve
+   83  terraform destroy --auto-approve
+   84  terraform apply --auto-approve -var="instance_type=t2.micro"
+   85  terraform destroy --auto-approve -var="instance_type=t2.micro"
+   86  cat main.tf
+   87  vim main.tf
+   88  terraform apply --auto-approve
+   89  terraform destroy --auto-approve -var="instance_ami=ami-04823729c75214919" -var="instance_type=t2.micro"
+   90  cat main.tf
+   91  vim main.tf
+   92  terraform plan --auto-approve
+   93  terraform apply --auto-approve
+   94  vim main.tf
+   95  terraform apply --auto-approve
+   96  vim main.tf
+   97  terraform apply --auto-approve
+   98  terraform workspace list
+   99  terraform workspace new dev
+  100  terraform workspace list
+  101  terraform workspace show
+  102  ll
+  103  vim main.tf
+  104  terraform apply --auto-approve
+  105  terraform workspace new test
+  106  vim main.tf
+  107  terraform apply --auto-approve
+  108  terraform workspace select dev
+  109  terraform workspace show
+  110  terraform workspace select dev
+  111  terraform workspace delete dev
+  112  terraform workspace delete test
+  113  terraform workspace select test
+  114  terraform state list
+  115  terraform destroy --auto-approve
+  116  terraform state list
+  117  terraform workspace select dev
+  118  terraform workspace delete test
+  119  terraform state list
+  120  terraform destroy --auto-approve
+  121  terraform workspace select default
+  122  terraform workspace delete dev
+  123  terraform workspace default
+  124  terraform workspace select default
+  125  terraform state list
+  126  terraform destroy --auto-approve
+  127  vim main.tf
+  128  terraform apply --auto-approve
+  129  vim main.tf
+  130  terraform destroy --auto-approve
+  131  terraform workspace new dev
+  132  ll
+  133  vim main.tf
+  134  terraform apply --auto-approve
+  135  vim main.tf
+  136  echo $workspace
+  137  terraform apply --auto-approve
+  138  echo $terraform.workspace
+  139  echo ${terraform.workspace}
+  140  vim main.tf
+  141  terraform apply --auto-approve
+  142  terraform workspace new test
+  143  terraform apply --auto-approve
+  144  vim main.tf
+  145  terraform destroy --auto-approve
+  146  terraform workspace select dev
+  147  terraform destroy --auto-approve
+  148  terraform workspace select default
+  149  terraform workspace delete dve
+  150  terraform workspace delete dev
+  151  terraform workspace delete test
+  152  history
+
