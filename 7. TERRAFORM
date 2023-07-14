@@ -482,3 +482,200 @@ HISTORY:
   151  terraform workspace delete test
   152  history
 
+
+===============================================================
+
+DAY-04: 
+
+ALIAS & PROVIDERS:
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+}
+
+provider "aws" {
+region = "ap-south-1"
+alias = "south"
+}
+
+resource "aws_instance" "two" {
+provider = aws.south
+ami = "ami-006935d9a6773e4ec"
+instance_type = "t2.micro"
+tags = {
+Name = "Mumbai-server"
+}
+}
+
+TAINT: To recreate the specific objects which is not on healthy state.
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+}
+
+resource "aws_s3_bucket" "two" {
+bucket = "devopsbyraham887766"
+}
+
+resource "aws_ebs_volume" "three" {
+size = 31
+availability_zone = "us-east-1a"
+tags = {
+Name = "raham-ebs"
+}
+} 
+
+terraform state list
+terraform taint aws_instance.one
+terraform apply --auto-approve
+
+TERRAFORM S3 BACKEND SETUP:
+it is used to store the state file on remote s3 location.
+even if we lost the state file we will still have the backup of the resource information.
+
+
+provider "aws" {
+region = "us-east-1"
+}
+
+terraform {
+  backend "s3" {
+    bucket = "mynewtwrraformstatebucket01"
+    key    = "swiggy/prod/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+}
+
+resource "aws_s3_bucket" "two" {
+bucket = "devopsbyraham887766"
+}
+
+resource "aws_ebs_volume" "three" {
+size = 31
+availability_zone = "us-east-1a"
+tags = {
+Name = "raham-ebs"
+}
+}
+
+TERRAFORM LIFECYCLE:
+
+Prevent destroy: it will not destroy our resource at any cost
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+lifecycle {
+prevent_destroy = true
+}
+}
+
+
+provider "aws" {
+region = "us-east-1"
+}
+
+resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+lifecycle {
+prevent_destroy = false
+}
+}
+
+COMMENTS: to ingnore the execution of a block
+
+provider "aws" {
+region = "us-east-1"
+}
+
+/*resource "aws_instance" "one" {
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+tags = {
+Name = "Nvirginia-server"
+}
+lifecycle {
+prevent_destroy = true
+}
+}*/
+
+HISTORY:
+
+  156  vim main.tf
+  157  terraform init
+  158  terraform plan
+  159  terraform apply --auto-approve
+  160  terraform destroy --auto-approve
+  161  terraform state list
+  162  vim main.tf
+  163  terraform apply --auto-approve
+  164  terraform state list
+  165  terraform taint list
+  166  terraform taint
+  167  terraform state list
+  168  terraform taint aws_instance.one
+  169  terraform taint list
+  170  terraform apply --auto-approve
+  171  terraform state list
+  172  terraform taint aws_s3_bucket.two
+  173  terraform apply --auto-approve
+  174  vim main.tf
+  175  ll
+  176  vim main.tf
+  177  terraform init -upgrde
+  178  terraform init -upgrade
+  179  terraform plan
+  180  terraform apply --auto-approve
+  181  vim main.tf
+  182  terraform state list
+  183  terraform taint aws_ebs_volume.three
+  184  terraform apply --auto-approve
+  185  terraform destroy --auto-approve
+  186  terraform state list
+  187  vim main.tf
+  188  terraform apply --auto-approve
+  189  vim main.tf
+  190  terraform apply --auto-approve
+  191  terraform destroy --auto-approve
+  192  vim main.tf
+  193  terraform destroy --auto-approve
+  194  vim main.tf
+  195  terraform apply --auto-approve
+  196  vim main.tf
+  197  history
+
