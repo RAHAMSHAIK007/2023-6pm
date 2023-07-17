@@ -679,3 +679,295 @@ HISTORY:
   196  vim main.tf
   197  history
 
+=========================================================================================================================
+LOOPS:
+
+provider "aws" {
+}
+
+resource "aws_iam_user" "one" {
+count = length(var.user_name)
+name = var.user_name[count.index]
+}
+
+variable "user_name" {
+description = "*"
+type = list(string)
+default = ["rahamshaik001", "rahamshaik002", "rahamshaik003"]
+}
+
+
+provider "aws" {
+}
+
+resource "aws_iam_user" "one" {
+for_each = var.user_name
+name = each.value
+}
+
+variable "user_name" {
+description = "*"
+type = set(string)
+default = ["rahamshaik001", "rahamshaik002", "rahamshaik003", "rahamshaik003"]
+}
+
+
+TERRAFORM VALIDATE : Used to validate the syntax of terraform
+TERRAFORM FMT: Give format for the terraform files
+
+DYNAMIC BLOCK: To reuse the code and reduce the legnth of code
+provider "aws" {
+}
+
+locals {
+  ingress_rules = [{
+    port        = 443
+    description = "Ingress rules for port 443"
+    },
+    {
+      port        = 80
+      description = "Ingree rules for port 80"
+  },
+  {
+      port        = 8080
+      description = "Ingree rules for port 8080"
+},
+{
+      port        = 9090
+      description = "Ingree rules for port 9090"
+},]
+}
+
+resource "aws_instance" "ec2_example" {
+  ami                    = "ami-0c02fb55956c7d316"
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.main.id]
+  tags = {
+    Name = "Terraform EC2"
+  }
+}
+
+resource "aws_security_group" "main" {
+
+  egress = [
+    {
+      cidr_blocks      = ["0.0.0.0/0"]
+      description      = "*"
+      from_port        = 0
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "-1"
+      security_groups  = []
+      self             = false
+      to_port          = 0
+  }]
+
+  dynamic "ingress" {
+    for_each = local.ingress_rules
+
+    content {
+      description = "*"
+      from_port   = ingress.value.port
+      to_port     = ingress.value.port
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
+
+  tags = {
+    Name = "terra sg"
+  }
+}
+
+
+IMPORT: Used to import the resource configuration which is not created from terraform
+
+
+provider "aws" {
+}
+
+resource "aws_instance" "one" {
+
+}
+Note: create a server manually
+
+terraform import aws_instance.one (instance_id)
+cat terraform.tfstate
+
+TERRAFORM VERSION CONSTRAINTS:
+changing the current version of provider plugins & locals plugins etc ---
+
+https://registry.terraform.io/providers/hashicorp/aws/latest
+
+
+provider "aws" {
+}
+
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = ">5.6.2"
+    }
+  }
+}
+
+
+provider "aws" {
+}
+
+terraform {
+  required_providers {
+    local = {
+      source = "hashicorp/local"
+      version = "<2.3.0"
+    }
+  }
+}
+
+resource "local_file" "one" {
+filename= "/root/abc.txt"
+content= "hai all my name is raham"
+}
+
+TERRAFORM MODULES:
+Its a container of creating resources.
+it will place our configuration files in multiple folders.
+
+
+[root@ip-172-31-87-7 terraform]# cat main.tf
+module "my_instance_module" {
+        source = "./modules/instances"
+        ami = "ami-04823729c75214919"
+        instance_type = "t2.micro"
+        instance_name = " rahaminstance"
+}
+
+module "s3_module" {
+source = "./modules/buckets"
+bucket_name = "devopsherahamshaik009988"
+}
+
+[root@ip-172-31-87-7 terraform]# cat provider.tf
+provider "aws" {
+}
+[root@ip-172-31-87-7 terraform]# cat modules/instances/main.tf
+resource "aws_instance" "my_instance" {
+        ami = var.ami
+        instance_type = var.instance_type
+        tags = {
+                Name = var.instance_name
+        }
+}
+
+[root@ip-172-31-87-7 terraform]# cat modules/instances/variable.tf
+variable "ami" {
+  type          = string
+}
+
+variable "instance_type" {
+  type          = string
+}
+
+variable "instance_name" {
+  description   = "Value of the Name tag for the EC2 instance"
+  type          = string
+}
+
+[root@ip-172-31-87-7 terraform]# cat modules/buckets/main.tf
+resource "aws_s3_bucket" "b" {
+bucket = var.bucket_name
+}
+
+[root@ip-172-31-87-7 terraform]# cat modules/buckets/variable.tf
+variable "bucket_name" {
+type = string
+}
+
+
+VPC & SUBNETS & EC2:
+
+provider "aws" {
+region = "us-east-1"
+}
+
+locals {
+env = "swiggy"
+}
+
+resource "aws_vpc" "one" {
+cidr_block = "10.6.0.0/16"
+tags = {
+Name = "${local.env}-vpc"
+}
+}
+
+resource "aws_subnet" "two" {
+vpc_id = aws_vpc.one.id
+cidr_block = "10.6.0.0/16"
+tags = {
+Name = "${local.env}-subnet"
+}
+}
+
+resource "aws_instance" "raham" {
+subnet_id = aws_subnet.two.id
+ami = "ami-04823729c75214919"
+instance_type = "t2.micro"
+key_name = "4pmbatch"
+tags = {
+Name = "${local.env}"
+}
+}
+
+terraform graph is used to see the infrastructre creation on a graphical way.
+website: terraform graphwiz
+
+HISTORY:
+
+ 1  sudo yum install -y yum-utils
+    2  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    3  sudo yum -y install terraform
+    4  aws configure
+    5  vim .aws/config
+    6  vim main.tg
+    7  terraform init
+    8  mv main.tg main.tf
+    9  terraform init
+   10  terraform plan
+   11  terraform apply
+   12  ll
+   13  cat abc.txt
+   14  vim main.tf
+   15  terraform init -upgrade
+   16  vim main.tf
+   17  terraform init -upgrade
+   18  vim main.tf
+   19  cat main.tf
+   20  mkdir -p modules/instances
+   21  mkdir -p modules/buckets
+   22  vim modules/instances/main.tf
+   23  vim modules/instances/variable.tf
+   24  vim /modules/buckets/main.tf
+   25  vim /modules/buckets/variable.tf
+   26  cat provider.tf
+   27  vim provieder.tf
+   28  yum install tree -y
+   29  tree
+   30  cat main.tf
+   31  vim main.tf
+   32  terraform init -upgrade
+   33  terraform apply --auto-approve
+   34  terraform destroy --auto-approve
+   35  vim m
+   36  rm -rf *
+   37  vim main.tf
+   38  terraform apply --auto-approve
+   39  vim main.tf
+   40  terraform apply --auto-approve
+   41  vim main.tf
+   42  terraform apply --auto-approve
+   43  terraform graph
+   44  terraform destroy --auto-approve
+   45  history
+
